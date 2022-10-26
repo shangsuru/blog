@@ -16,7 +16,7 @@ One can say that there exist three core concepts behind Intel SGX that one needs
 
 Applications written for Intel SGX are generally split into two parts, an untrusted part and a trusted part called enclave, which is a protected environment for all security-critical operations and data. The confidentiality and integrity of the data and computation performed inside an enclave is shielded from attacks coming from malicious software on the same computer, even from the system software. Execution flow can only enter the enclave via special CPU instructions. SGX does this by setting aside a portion of memory inside the **Processor Reserved Memory (PRM)** and protecting it from all non-enclave memory accesses, including the OS and hypervisor. The associated memory is encrypted and only gets decrypted when inside the CPU.
 
-![Memory Layout](images/1.png)
+![Memory Layout](posts/intel-sgx/images/1.png)
 <p align = "center">
 Fig.1 - Intel SGX Memory Layout
 </p>
@@ -29,7 +29,7 @@ Also, access rights (Read,Write or Execute) of an EPC page are stored in its cor
 
 Imagine a scenario, where we have code that performs access control (see Figure 2). When the access control passes, e.g. when the right token was provided, we execute some portion of code that resembles a LOGIN() function and is located within the page with the virtual address of 0x51000. Else, an error is displayed using the ERROR() code at virtual address 0x52000, where no access is granted. But as one can see in the right half of Figure 2, the system software can modify the page table at will and therefore is able to change the mapping between virtual and physical address, switching the pointers to the LOGIN() and ERROR() page. That means, when the access control fails, the attacker still gets logged in. But with Intel SGX, the intended virtual address of an EPCpage is stored in its EPCM entry, so the CPU can check, if the virtual address from which a request was mapped to the physical address of the EPC page, is actually the correct virtual address or if the mapping inside the page table was manipulated. A wider range of attacks are discussed in a later section about side-channel attacks on Intel SGX. 
 
-![Address Translation Attack](images/2.png)
+![Address Translation Attack](posts/intel-sgx/images/2.png)
 <p align = "center">
 Fig.2 - A simple Address Translation Attack
 </p>
@@ -40,7 +40,7 @@ An important question arises that when non-enclave software cannot directly acce
 
 Using remote attestation, a user that is communicating with an enclave can ensure that it was setup properly within a secure container hosted by trusted hardware and that the code executing inside that enclave is unmodified and as intended by the user. Any unauthorized changes to the software on the remote computer can be immediately recognized. This works by letting the trusted hardware generate a certificate that proves that the software was unaltered via signing its measurement introduced in the previous section. After the user has performed remote attestation and therefore has established trust in the correct workings of the enclave, she can proceed to provision her secrets to the enclave. The proposed remote attestation schemes slightly differ between various architectures, e.g. for **Intel SGX**, **RISC-V** or **ARM**. Here, we will only introduce a simple generic version that combines remote attestation with a key agreement protocol to highlight the general principle.
 
-![Remote Attestation](images/3.png)
+![Remote Attestation](posts/intel-sgx/images/3.png)
 <p align = "center">
 Fig.3 - Remote Attestation combined with DKE
 </p>
@@ -55,7 +55,7 @@ Sealing refers to securely storing data outside of the enclave, ”sealed” fro
 
 Intel SGX is used in cases where sensitive data should be processed privately on a remote computer and/or when a remote computation should be executed securely without the underlying system to be able to intervene with its integrity.
 
-![Example Application](images/4.png)
+![Example Application](posts/intel-sgx/images/4.png)
 <p align = "center">
 Fig.4 - Example for an SGX Application
 </p>
