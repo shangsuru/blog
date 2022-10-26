@@ -1,4 +1,8 @@
 baseURL = "http://example.org/"
 languageCode = "en-us"
 title = "My New Hugo Site"
-theme = "ananke"
+theme = "crisp"
+
+[Params]
+
+disqus = "disqus-shortname"
