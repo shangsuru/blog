@@ -1,6 +1,6 @@
 baseURL = "https://www.henryhelm.com/"
 languageCode = "en-us"
-title = "Ezhil"
+title = "Henry Helm"
 theme = "ezhil"
 paginate = 5
 
@@ -15,7 +15,7 @@ googleAnalytics = "UA-123-45"
 summaryLength = 20
 
 [params]
-	subtitle = "Clean and minimal personal [blog theme for Hugo](https://github.com/vividvilla/ezhil)"
+	subtitle = "A blog about formal methods, distributed systems and cryptography"
 	disableDisqusTypes = ["page"]
 	featherIconsCDN = true
 	mode = "auto" # "dark", "auto", "light"
@@ -46,12 +46,12 @@ weight = 4
 [[params.social]]
 name = "Github"
 icon = "github"
-url = "https://github.com/vividvilla/ezhil"
+url = "https://github.com/shangsuru"
 
 [[params.social]]
-name = "RSS"
-icon = "rss"
-url = "/index.xml"
+name = "Linkedin"
+icon = "linkedin"
+url = "https://www.linkedin.com/in/henryhelm/"
 
 [taxonomies]
    tag = "tags"
