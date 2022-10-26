@@ -1,7 +1,12 @@
 ---
 title: "About"
-date: 2019-04-19T21:37:58+05:30
+date: 2022-10-26
 type: "page"
 ---
 
-This is some static page where you can write about yourself.
+Hi, I'm Henry, currently a graduate student of Computer Science at TU Darmstadt.
+My main interests are formal methods, more specifically those applied to distributed systems and security protocols.
+
+I've been programming since 2018, mainly using Java and Rust, but I also like functional programming languages. 
+
+On this blog, I want to write about research papers that I find interesting or projects that I've done.
