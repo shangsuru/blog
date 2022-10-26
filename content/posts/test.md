@@ -1,7 +1,22 @@
 ---
 title: "Typography"
-date: 2018-03-18T12:13:38+05:30
+description: "The art of letting go."
+tags: [test]
+date: 2022-10-26
+math: true
 ---
+
+# Some Latex
+
+This will provide inline equations with single dollar signs. $x = {-b \pm \sqrt{b^2-4ac} \over 2a}$
+
+The following
+
+$$\int_{a}^{b} x^2 dx$$
+
+is an integral. 
+
+# Lorem ipsum
 
 Lid est laborum et dolorum fuga. Et harum quidem rerum facilis est et expeditasi distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihilse impedit quo minus id quod amets untra dolor amet sad. Sed ut perspser iciatis unde omnis iste natus error sit voluptatem accusantium doloremque laste. Dolores sadips ipsums sits.
 
