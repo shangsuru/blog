@@ -16,7 +16,7 @@ One can say that there exist three core concepts behind Intel SGX that one needs
 
 Applications written for Intel SGX are generally split into two parts, an untrusted part and a trusted part called enclave, which is a protected environment for all security-critical operations and data. The confidentiality and integrity of the data and computation performed inside an enclave is shielded from attacks coming from malicious software on the same computer, even from the system software. Execution flow can only enter the enclave via special CPU instructions. SGX does this by setting aside a portion of memory inside the **Processor Reserved Memory (PRM)** and protecting it from all non-enclave memory accesses, including the OS and hypervisor. The associated memory is encrypted and only gets decrypted when inside the CPU.
 
-![Memory Layout](res/1.png)
+![Memory Layout](images/1.png)
 <p align = "center">
 Fig.1 - Intel SGX Memory Layout
 </p>
@@ -29,7 +29,7 @@ Also, access rights (Read,Write or Execute) of an EPC page are stored in its cor
 
 Imagine a scenario, where we have code that performs access control (see Figure 2). When the access control passes, e.g. when the right token was provided, we execute some portion of code that resembles a LOGIN() function and is located within the page with the virtual address of 0x51000. Else, an error is displayed using the ERROR() code at virtual address 0x52000, where no access is granted. But as one can see in the right half of Figure 2, the system software can modify the page table at will and therefore is able to change the mapping between virtual and physical address, switching the pointers to the LOGIN() and ERROR() page. That means, when the access control fails, the attacker still gets logged in. But with Intel SGX, the intended virtual address of an EPCpage is stored in its EPCM entry, so the CPU can check, if the virtual address from which a request was mapped to the physical address of the EPC page, is actually the correct virtual address or if the mapping inside the page table was manipulated. A wider range of attacks are discussed in a later section about side-channel attacks on Intel SGX. 
 
-![Address Translation Attack](res/2.png)
+![Address Translation Attack](images/2.png)
 <p align = "center">
 Fig.2 - A simple Address Translation Attack
 </p>
@@ -40,7 +40,7 @@ An important question arises that when non-enclave software cannot directly acce
 
 Using remote attestation, a user that is communicating with an enclave can ensure that it was setup properly within a secure container hosted by trusted hardware and that the code executing inside that enclave is unmodified and as intended by the user. Any unauthorized changes to the software on the remote computer can be immediately recognized. This works by letting the trusted hardware generate a certificate that proves that the software was unaltered via signing its measurement introduced in the previous section. After the user has performed remote attestation and therefore has established trust in the correct workings of the enclave, she can proceed to provision her secrets to the enclave. The proposed remote attestation schemes slightly differ between various architectures, e.g. for **Intel SGX**, **RISC-V** or **ARM**. Here, we will only introduce a simple generic version that combines remote attestation with a key agreement protocol to highlight the general principle.
 
-![Remote Attestation](res/3.png)
+![Remote Attestation](images/3.png)
 <p align = "center">
 Fig.3 - Remote Attestation combined with DKE
 </p>
@@ -49,13 +49,13 @@ In Figure 3, we see a **Diffie-Hellman Key Exchange (DKE)** to compute a shared 
 
 # Securing Data via Sealing
 
-Sealing refers to securely storing data outside of the enclave, ”sealed” from access/home/henry/Desktop/blog/themes/ezhil/layouts/404.html by anyone but the enclave itself. Sealed storage is an important concept, because we need a way to persist data securely outside of the enclave. On the one hand, this is due to the limited memory of 128 MB set aside for EPC pages inside the PRM. In consequence, we can run out of space, and Intel SGX needs a secure way to evict pages to DRAM and load them back later on. On the other hand, all secrets provisioned to an enclave get lost when the enclave is destroyed. Here, we need sealed storage as well in order to maintain this secret data across sessions. For storing data in unprotected storage, three things are taken care of by Intel SGX’s sealing mechanism: Confidentiality via encryption, integrity via MACs and freshness via nonces. The derivation of the sealing key used for those cryptographic primitives is possible with two different policies: We can bind the key to the current enclave’s identity or to the enclave author. While the former only allows the restoration of the sealed secrets by the exact same enclave, the later enables sharing information via sealed storage between different enclaves of the same author.
+Sealing refers to securely storing data outside of the enclave, ”sealed” from access by anyone but the enclave itself. Sealed storage is an important concept, because we need a way to persist data securely outside of the enclave. On the one hand, this is due to the limited memory of 128 MB set aside for EPC pages inside the PRM. In consequence, we can run out of space, and Intel SGX needs a secure way to evict pages to DRAM and load them back later on. On the other hand, all secrets provisioned to an enclave get lost when the enclave is destroyed. Here, we need sealed storage as well in order to maintain this secret data across sessions. For storing data in unprotected storage, three things are taken care of by Intel SGX’s sealing mechanism: Confidentiality via encryption, integrity via MACs and freshness via nonces. The derivation of the sealing key used for those cryptographic primitives is possible with two different policies: We can bind the key to the current enclave’s identity or to the enclave author. While the former only allows the restoration of the sealed secrets by the exact same enclave, the later enables sharing information via sealed storage between different enclaves of the same author.
 
 # Applications
 
 Intel SGX is used in cases where sensitive data should be processed privately on a remote computer and/or when a remote computation should be executed securely without the underlying system to be able to intervene with its integrity.
 
-![Example Application](res/4.png)
+![Example Application](images/4.png)
 <p align = "center">
 Fig.4 - Example for an SGX Application
 </p>
