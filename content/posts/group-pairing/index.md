@@ -164,7 +164,7 @@ and
  
 $$X_i = H(K_i^l) \oplus H(K_i^r)$$
  
-Then, at the end he broadcasts $ m_i = <U_i, U\textsubscript{i-1}, V_i^l;U_i,U\textsubscript{i+1}, V_i^r; X_i> $
+Then, at the end he broadcasts $ m_i = < U_i , U\textsubscript{i-1} , V_i^l ; U_i , U\textsubscript{i+1}, V_i^r ; X_i > $
 
 and saves the exchanged messages $m_i$. In order to establish a group key, each user first authenticates his neighbors in the logical ring and checks if $X_1 \oplus X_2 \oplus \dots \oplus X_n = 0$.
 
@@ -174,11 +174,7 @@ $E_6^l = V_5^r / K_6^l$.
 
 $$X_5 = H(K_6^l) \oplus E_6^l = H(K_6^l) \oplus H(K_5^l) = H(K_5^r) \oplus H(K_5^l)$$
 
-as per definition of $X_5$. If this verification succeeds, he sets 
-
-$$K_i = H(K_i^l)$$ 
-
-and can compute the other n - 1 values
+as per definition of $X_5$. If this verification succeeds, he sets $K_i = H(K_i^l)$ and can compute the other n - 1 values
 
 $$K_{i-j} = H(K_i^l) \oplus X_{i-1} \oplus \dots X_{i-j}$$
 
