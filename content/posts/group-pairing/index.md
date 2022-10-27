@@ -175,7 +175,7 @@ $X_5 = H(K_6^l) \oplus E_6^l = H(K_6^l) \oplus H(K_5^l) = H(K_5^r) \oplus H(K_5^
 
 If this verification succeeds, he sets $K_i = H(K_i^l)$ and can compute the other n - 1 values 
 
-$$K_k = H(K_i^l) \oplus X_{i-1} \oplus \dots X_k$$
+$$K_k = H(K_i^l) \oplus X_i \oplus \dots X_k$$
 
 where $k = i - j, j = 1, \dots, n-1$. As an example how $U_6$ can compute
 
