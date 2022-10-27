@@ -171,10 +171,9 @@ and saves the exchanged messages $m_i$. In order to establish a group key, each 
 E.g., for $U_6$ to verify $U_5$, he computes 
 $E_6^l = V_5^r / K_6^l$. 
  As a reminder, per definition, $V_5^r = K_5^r * H(K_5^l) = K_6^l * H(K_5^l)$, therefore $E_6^l = H(K_5^l)$. So he has to check if 
+$X_5 = H(K_6^l) \oplus E_6^l = H(K_6^l) \oplus H(K_5^l) = H(K_5^r) \oplus H(K_5^l)$ as per definition of $X_5$. 
 
-$$X_5 = H(K_6^l) \oplus E_6^l = H(K_6^l) \oplus H(K_5^l) = H(K_5^r) \oplus H(K_5^l)$$
-
-as per definition of $X_5$. If this verification succeeds, he sets $K_i = H(K_i^l)$ and can compute the other n - 1 values
+If this verification succeeds, he sets $K_i = H(K_i^l)$ and can compute the other n - 1 values
 
 $$K_{i-j} = H(K_i^l) \oplus X_{i-1} \oplus \dots X_{i-j}$$
 
