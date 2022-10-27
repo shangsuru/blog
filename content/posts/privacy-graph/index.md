@@ -25,7 +25,7 @@ Then, I outline the programming abstractions of two prominent frameworks for par
 
 Secure Multi-Party Computation (MPC) enables a group of mutually distrusting parties to compute a joint function that depends on their private inputs without revealing anything but the result. MPC has come a long way from the 1980s, where the underlying theories were developed that showed that it is possible to compute an arbitrary function in a privacy-preserving manner, to today's state-of-the-art techniques with significant improvements in terms of efficiency. Thus, nowadays, MPC is fast enough to be applied in a wide range of practical applications. It enables privacy-preserving computations on highly sensitive data, like location, health, or social data.
 
-### 2.1.1 Ideal Functionality}
+### 2.1.1 Ideal Functionality
 
 The security notion of MPC protocols can be put in very simple terms: the *real-ideal paradigm* [5].
 In an ideal world, there exists one incorruptible party that everybody fully trusts. A secure computation can, hence, be realized very easily: Everyone sends his private input to the trusted party via secure channels. The trusted party computes the function of all inputs and sends back the result. Privacy is trivially ensured, because each party only sees its input and the result. 
@@ -212,7 +212,7 @@ Due to their ability to highly parallelize the graph computation, it becomes fea
 
 [6] Miklós Ajtai, János Komlós, and Endre Szemerédi. An 0 (n log n) sorting network. ACM Symposium on Theory of computing, 1983.
 
-[7] Koki Hamada, Ryo Kikuchi, Dai Ikarashi, Koji Chida, and Katsumi Takahashi. Practically efficient multi-party sorting protocols from comparison sort algorithms. International Conference on Information Security and Cryptology, 2012
+[7] Koki Hamada, Ryo Kikuchi, Dai Ikarashi, Koji Chida, and Katsumi Takahashi. Practically efficient multi-party sorting protocols from comparison sort algorithms. International Conference on Information Security and Cryptology, 2012.
 
 [8] Sven Laur, Jan Willemson, and Bingsheng Zhang. Round-efficient oblivious database manipulation. International Conference on Information Security, 2011.
 
