@@ -15,7 +15,7 @@ googleAnalytics = "UA-123-45"
 summaryLength = 20
 
 [params]
-	subtitle = "A blog about formal methods, distributed systems and cryptography"
+	subtitle = "A blog about formal methods, distributed systems and security"
 	disableDisqusTypes = ["page"]
 	featherIconsCDN = true
 	mode = "auto" # "dark", "auto", "light"
