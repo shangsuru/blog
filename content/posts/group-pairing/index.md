@@ -154,23 +154,21 @@ The paper suggests extracting common key bits using the wireless channel. Specif
 
 ![Password Extraction](posts/group-pairing/images/7.png)
 
-The users form a logical ring and perform the password extraction algorithm, e.g., via the shared properties of the wireless channel. 
-User $U_i$ acquires two short passwords $pw_{i, i-1}$ with 
-$U_{i-1}$ and $pw_{i, i+1}$ with $U_{i+1}$.
+The users form a logical ring and perform the password extraction algorithm, e.g., via the shared properties of the wireless channel. User $U_i$ acquires two short passwords $pw_{i, i-1}$ with $U_{i-1}$ and $pw_{i, i+1}$ with $U_{i+1}$.
 
-Now, any secure pairwise password authenticated key exchange can be employed, so that $U_i$ can obtain two secret values $K_i^l$ and $K_i^r$ with his respective neighbors in the logical ring. 
-
-$U_i$ computes 
+Now, any secure pairwise password authenticated key exchange can be employed, so that $U_i$ can obtain two secret values $K_i^l$ and $K_i^r$ with his respective neighbors in the logical ring. $U_i$ computes 
 
 $$V_i^l = K_i^l * H(K_i^r), V_i^r = K_i^r * H(K_i^l)$$
 
 and 
  
-$$X_i = H(K_i^l) \oplus H(K_i^r)$$.
+$$X_i = H(K_i^l) \oplus H(K_i^r)$$
  
- Then, at the end he broadcasts $m_i = <U_i, U_{i-1}, V_i^l;U_i,U_{i+1}, V_i^r; X_i>$ and saves the exchanged messages $m_i$.
+Then, at the end he broadcasts 
 
-In order to establish a group key, each user first authenticates his neighbors in the logical ring and checks if 
+$$m_i = <U_i, U_{i-1}, V_i^l;U_i,U_{i+1}, V_i^r; X_i>$$ 
+
+and saves the exchanged messages $m_i$. In order to establish a group key, each user first authenticates his neighbors in the logical ring and checks if 
 
 $$X_1 \oplus X_2 \oplus \dots \oplus X_n = 0$$ 
 
@@ -180,10 +178,17 @@ As a reminder, per definition, $V_5^r = K_5^r * H(K_5^l) = K_6^l * H(K_5^l)$, th
 
 $$X_5 = H(K_6^l) \oplus E_6^l = H(K_6^l) \oplus H(K_5^l) = H(K_5^r) \oplus H(K_5^l)$$
 
- as per definition of $X_5$. If this verification succeeds, he sets $K_i = H(K_i^l)$ and can compute the other n - 1 values
- $K_{i-j} = H(K_i^l) \oplus X_{i-1} \oplus \dots X_{i-j}$ where $j = 1, \dots, n-1$. As an example how $U_6$ can compute
+as per definition of $X_5$. If this verification succeeds, he sets 
 
-$$K_4 = H(K_6^l) \oplus X_5 \oplus X_4 = H(K_6^l) \oplus H(K_5^l) \oplus H(K_5^r) \oplus H(K_4^l) \oplus H(K_4^r) = H(K_4^l)$$.
+$$K_i = H(K_i^l)$$ 
+
+and can compute the other n - 1 values
+
+$$K_{i-j} = H(K_i^l) \oplus X_{i-1} \oplus \dots X_{i-j}$$
+
+where $j = 1, \dots, n-1$. As an example how $U_6$ can compute
+
+$$K_4 = H(K_6^l) \oplus X_5 \oplus X_4 = H(K_6^l) \oplus H(K_5^l) \oplus H(K_5^r) \oplus H(K_4^l) \oplus H(K_4^r) = H(K_4^l)$$
 
 Per definition $H(K_4^l) = K_4$ and $H(K_5^l) = H(K_4^r), H(K_5^r) = H(K_6^l)$. Therefore, those become 0 when XORing them together. The group key $K_g$ is then the product of all $K_i$.
 
