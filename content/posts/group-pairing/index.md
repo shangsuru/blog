@@ -130,9 +130,9 @@ The participants can use their exchanged public keys in a Group Diffie-Hellman K
 
 Other protocols in this category mainly differ in the distribution phase, where different topologies like a ring or tree topology is used, which involves more manual steps, and in the verification phase, where a visual representation of the hash is used instead of the three word phrases, which are easier to compare, see GAnGS [6] and Spate [8]. But SafeSlinger has the better way of avoiding impatient users to compromise the security of the protocol.
 
-## Chorus: Scalable In-band Trust Establishment for Multiple Constrained Devices over the Insecure Wireless Channel
+## Chorus
 
-This approach [9] is not a full solution for group pairing, but offers an alternative to the verification phase, which was done via an out-of-band channel in the previous presented solutions. It presents a novel physical layer primitive, called Chorus, that is enabling authenticated fixed-length string comparison, held by multiple devices, within constant time over an insecure wireless channel. It does not require any prior shared secret. Unlike Chorus, other secure device pairing schemes of that kind require the security of an out-of-band channel, like the visual or audio channel. These schemes, however, usually have higher demands on human involvement and have additional hardware requirements that a smartphone might easily fulfill, but not the typical resource constrained IoT device.
+Chorus [9] is not a full solution for group pairing, but offers an alternative to the verification phase, which was done via an out-of-band channel in the previous presented solutions. It presents a novel physical layer primitive, called Chorus, that is enabling authenticated fixed-length string comparison, held by multiple devices, within constant time over an insecure wireless channel. It does not require any prior shared secret. Unlike Chorus, other secure device pairing schemes of that kind require the security of an out-of-band channel, like the visual or audio channel. These schemes, however, usually have higher demands on human involvement and have additional hardware requirements that a smartphone might easily fulfill, but not the typical resource constrained IoT device.
 
 The principle behind Chorus is the following: At the end of some information exchange protocol, participants would like to make sure that they have exchanged and received the same information, just like in the verification phase of the previous protocols. This resembles basically the authentication of a string of the protocol transcript. Chorus makes use of an encoding scheme that makes it possible that any differences of the strings of different participants are immediately noticed. 
 
@@ -154,21 +154,34 @@ The paper suggests extracting common key bits using the wireless channel. Specif
 
 ![Password Extraction](posts/group-pairing/images/7.png)
 
-The users form a logical ring and perform the password extraction algorithm, e.g., via the shared properties of the wireless channel, so that user $U_i$ acquires two short passwords $pw_{i, i-1}$ with $U_{i-1}$ and $pw_{i, i+1}$ with $U_{i+1}$.
+The users form a logical ring and perform the password extraction algorithm, e.g., via the shared properties of the wireless channel. 
+User $U_i$ acquires two short passwords $pw_{i, i-1}$ with 
+$U_{i-1}$ and $pw_{i, i+1}$ with $U_{i+1}$.
+
 Now, any secure pairwise password authenticated key exchange can be employed, so that $U_i$ can obtain two secret values $K_i^l$ and $K_i^r$ with his respective neighbors in the logical ring. 
 
 $U_i$ computes 
 
-$$V_i^l = K_i^l * H(K_i^r), V_i^r = K_i^r * H(K_i^l$$
+$$V_i^l = K_i^l * H(K_i^r), V_i^r = K_i^r * H(K_i^l)$$
 
 and 
  
-$$X_i = H(K_i^l)$\oplus $H(K_i^r)$$.
+$$X_i = H(K_i^l) \oplus H(K_i^r)$$.
  
  Then, at the end he broadcasts $m_i = <U_i, U_{i-1}, V_i^l;U_i,U_{i+1}, V_i^r; X_i>$ and saves the exchanged messages $m_i$.
 
-In order to establish a group key, each user first authenticates his neighbors in the logical ring and checks if $X_1$ \oplus $X_2$ \oplus \dots \oplus $X_n$ = 0. E.g., for $U_6$ to verify $U_5$, he computes $E_6^l = V_5^r / K_6^l$. As a reminder, per definition, $V_5^r = K_5^r * H(K_5^l) = K_6^l * H(K_5^l)$, therefore $E_6^l = H(K_5^l)$. So he has to check if $X_5 = H(K_6^l)$\oplus $E_6^l = H(K_6^l)$\oplus $H(K_5^l) = H(K_5^r)$\oplus $H(K_5^l)$ as per definition of $X_5$.
-If this verification succeeds, he sets $K_i = H(K_i^l)$ and can compute the other n - 1 values $K_{i-j} = H(K_i^l)$\oplus $X_{i-1}$\oplus \dots $X_{i-j}$ where j = 1, \dots, n-1. As an example how $U_6$ can compute
+In order to establish a group key, each user first authenticates his neighbors in the logical ring and checks if 
+
+$$X_1 \oplus X_2 \oplus \dots \oplus X_n = 0$$ 
+
+E.g., for $U_6$ to verify $U_5$, he computes 
+$E_6^l = V_5^r / K_6^l$. 
+As a reminder, per definition, $V_5^r = K_5^r * H(K_5^l) = K_6^l * H(K_5^l)$, therefore $E_6^l = H(K_5^l)$. So he has to check if 
+
+$$X_5 = H(K_6^l) \oplus E_6^l = H(K_6^l) \oplus H(K_5^l) = H(K_5^r) \oplus H(K_5^l)$$
+
+ as per definition of $X_5$. If this verification succeeds, he sets $K_i = H(K_i^l)$ and can compute the other n - 1 values
+ $K_{i-j} = H(K_i^l) \oplus X_{i-1} \oplus \dots X_{i-j}$ where $j = 1, \dots, n-1$. As an example how $U_6$ can compute
 
 $$K_4 = H(K_6^l) \oplus X_5 \oplus X_4 = H(K_6^l) \oplus H(K_5^l) \oplus H(K_5^r) \oplus H(K_4^l) \oplus H(K_4^r) = H(K_4^l)$$.
 
