@@ -173,9 +173,11 @@ $E_6^l = V_5^r / K_6^l$.
  As a reminder, per definition, $V_5^r = K_5^r * H(K_5^l) = K_6^l * H(K_5^l)$, therefore $E_6^l = H(K_5^l)$. So he has to check if 
 $X_5 = H(K_6^l) \oplus E_6^l = H(K_6^l) \oplus H(K_5^l) = H(K_5^r) \oplus H(K_5^l)$ as per definition of $X_5$. 
 
-If this verification succeeds, he sets $K_i = H(K_i^l)$ and can compute the other n - 1 values $K_k = H(K_i^l) \oplus X_{i-1} \oplus \dots X_k$ where $k = i - j, j = 1, \dots, n-1$. 
+If this verification succeeds, he sets $K_i = H(K_i^l)$ and can compute the other n - 1 values 
 
-As an example how $U_6$ can compute
+$$K_k = H(K_i^l) \oplus X_{i-1} \oplus \dots X_k$$
+
+where $k = i - j, j = 1, \dots, n-1$. As an example how $U_6$ can compute
 
 $$K_4 = H(K_6^l) \oplus X_5 \oplus X_4 = H(K_6^l) \oplus H(K_5^l) \oplus H(K_5^r) \oplus H(K_4^l) \oplus H(K_4^r) = H(K_4^l)$$
 
