@@ -46,8 +46,6 @@ The resulting root node is the group key, which can be derived by all participan
 
 ## Talking-to-Strangers and Seeing-is-Believing
 
-![Seeing-is-Believing](posts/group-pairing/images/4.png)
-
 The idea behind Talking-to-Strangers [3] is the following: Two parties can exchange public keys by utilizing an out-of-band channel to send each other the hash of their respective public keys as a commitment. Now the real public keys can be transferred over the insecure wireless channel and subsequently verified via the earlier received commitments. Seeing-is-Believing [4] uses the visual channel as an out-of-bands channel. More specifically, it requires smartphones with displays and a camera. One smartphone displays a bar code that encodes the commitment of its public key and another smartphone can scan this bar code to retrieve it.
 
 ## Don't Bump, Shake on It
@@ -93,7 +91,7 @@ The attacker can also just secretly add himself to the group as a malicious byst
 For this type of protocol, the participants have no shared keys to base their initial trust on. Inevitably, because there is no shared secret to verify the legitimacy of the other participants, these protocols have to rely on human aid to verify the exchanged data. They commonly share the following 3 phases:
 
 1. **Collection**, where the user selects and prepares the data he wants to share,
-2. **\textbf{**Distribution}, where the data is exchanged between the participants, often making use of commitments,
+2. **Distribution**, where the data is exchanged between the participants, often making use of commitments,
 3. **Verification**, where the exchanged information has to be verified. This is done by computing a hash over the exchanged information and displaying that hash in a human friendly way for comparison. 
 
 ## The SafeSlinger Protocol
@@ -157,11 +155,22 @@ The paper suggests extracting common key bits using the wireless channel. Specif
 ![Password Extraction](posts/group-pairing/images/7.png)
 
 The users form a logical ring and perform the password extraction algorithm, e.g., via the shared properties of the wireless channel, so that user $U_i$ acquires two short passwords $pw_{i, i-1}$ with $U_{i-1}$ and $pw_{i, i+1}$ with $U_{i+1}$.
-Now, any secure pairwise password authenticated key exchange can be employed, so that $U_i$ can obtain two secret values $K_i^l$ and $K_i^r$ with his respective neighbors in the logical ring. $U_i$ computes $V_i^l = K_i^l * H(K_i^r), V_i^r = K_i^r * H(K_i^l)$ and $X_i = H(K_i^l)$\oplus $H(K_i^r)$. Then, at the end he broadcasts $m_i = <U_i, U_{i-1}, V_i^l;U_i,U_{i+1}, V_i^r; X_i>$ and saves the exchanged messages $m_i$.
+Now, any secure pairwise password authenticated key exchange can be employed, so that $U_i$ can obtain two secret values $K_i^l$ and $K_i^r$ with his respective neighbors in the logical ring. 
+
+$U_i$ computes 
+
+$$V_i^l = K_i^l * H(K_i^r), V_i^r = K_i^r * H(K_i^l$$
+
+and 
+ 
+$$X_i = H(K_i^l)$\oplus $H(K_i^r)$$.
+ 
+ Then, at the end he broadcasts $m_i = <U_i, U_{i-1}, V_i^l;U_i,U_{i+1}, V_i^r; X_i>$ and saves the exchanged messages $m_i$.
 
 In order to establish a group key, each user first authenticates his neighbors in the logical ring and checks if $X_1$ \oplus $X_2$ \oplus \dots \oplus $X_n$ = 0. E.g., for $U_6$ to verify $U_5$, he computes $E_6^l = V_5^r / K_6^l$. As a reminder, per definition, $V_5^r = K_5^r * H(K_5^l) = K_6^l * H(K_5^l)$, therefore $E_6^l = H(K_5^l)$. So he has to check if $X_5 = H(K_6^l)$\oplus $E_6^l = H(K_6^l)$\oplus $H(K_5^l) = H(K_5^r)$\oplus $H(K_5^l)$ as per definition of $X_5$.
 If this verification succeeds, he sets $K_i = H(K_i^l)$ and can compute the other n - 1 values $K_{i-j} = H(K_i^l)$\oplus $X_{i-1}$\oplus \dots $X_{i-j}$ where j = 1, \dots, n-1. As an example how $U_6$ can compute
-$K_4 = H(K_6^l) \oplus X_5 \oplus X_4 = H(K_6^l) \oplus H(K_5^l) \oplus H(K_5^r) \oplus H(K_4^l) \oplus H(K_4^r) = H(K_4^l)$.
+
+$$K_4 = H(K_6^l) \oplus X_5 \oplus X_4 = H(K_6^l) \oplus H(K_5^l) \oplus H(K_5^r) \oplus H(K_4^l) \oplus H(K_4^r) = H(K_4^l)$$.
 
 Per definition $H(K_4^l) = K_4$ and $H(K_5^l) = H(K_4^r), H(K_5^r) = H(K_6^l)$. Therefore, those become 0 when XORing them together. The group key $K_g$ is then the product of all $K_i$.
 
@@ -189,18 +198,25 @@ In conclusion, because they are required to work autonomously, IoT devices, e.g.
 # References
 
 [1] T. Zillner. 2015. ZigBee Exploited: The Good, the bad and the ugly
+
 [2] W. Diffie et al. 1992. Authentication and authenticated key exchanges
+
 [3] D. Balfanz et al. 2002. Talking to strangers: Authentication in ad-hoc wireless networks
-[4] A. Perrig et al. 2005. Seeing-is-
-believing: Using camera phones for human-verifiable authentication
-[5] A. Studer et al. 2011. Don’t bump, shake on
-it: The exploitation of a popular accelerometer-based smart phone exchange and its secure replacement
+
+[4] A. Perrig et al. 2005. Seeing-is- believing: Using camera phones for human-verifiable authentication
+
+[5] A. Studer et al. 2011. Don’t bump, shake on it: The exploitation of a popular accelerometer-based smart phone exchange and its secure replacement
+
 [6] A. Studer et al. 2008. Gangs: gather, authenticate’n group securely
+
 [7] A. Perrig et al. 2013. Safeslinger: easy-to-use and secure public-key exchange
+
 [8] A. Perrig et al. 2010. Spate: Small-group PKI-less authenticated trust establishment
-[9] Y. Hou et al. 2013. Chorus: Scalable in-band
-trust establishment for multiple constrained devices over the insecure wireless channel
+
+[9] Y. Hou et al. 2013. Chorus: Scalable in-band trust establishment for multiple constrained devices over the insecure wireless channel
+
 [10] Y. Zhang et al. 2016. Password-authenticated group key exchange: A cross-layer design
+
 [11] Z. Gu and Y. Liu. 2016. Scalable group audio-based authentication scheme for IoT devices
-[12] H. Liu et al. 2014.
-Group secret key generation via received signal strength: Protocols, achievable rates, and implementation
+
+[12] H. Liu et al. 2014. Group secret key generation via received signal strength: Protocols, achievable rates, and implementation
