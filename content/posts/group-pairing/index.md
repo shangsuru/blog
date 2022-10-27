@@ -154,7 +154,7 @@ The paper suggests extracting common key bits using the wireless channel. Specif
 
 ![Password Extraction](posts/group-pairing/images/7.png)
 
-The users form a logical ring and perform the password extraction algorithm, e.g., via the shared properties of the wireless channel. User $U_i$ acquires two short passwords $pw_{i, i-1}$ with $U_{i-1}$ and $pw_{i, i+1}$ with $U_{i+1}$.
+The users form a logical ring and perform the password extraction algorithm, e.g., via the shared properties of the wireless channel. User $U_i$ acquires two short passwords $pw \textsubscript{i, i-1}$ with $U \textsubscript{i-1}$ and $pw \textsubscript{i, i+1}$ with $U \textsubscript{i+1}$.
 
 Now, any secure pairwise password authenticated key exchange can be employed, so that $U_i$ can obtain two secret values $K_i^l$ and $K_i^r$ with his respective neighbors in the logical ring. $U_i$ computes 
 
