@@ -41,15 +41,7 @@ A boolean gate has two input wires and one output wire. Each of the two input wi
 
 As an example, consider an AND gate, with two input wires $i$ and $j$ and an output wire $t$. The associated keys would then be $k_i^0$, $k_i^1$ for the left input wire, $k_j^0$ and $k_j^1$ for the right input wire and $k_t^0$ and $k_t^1$ for the output. The resulting table T is depicted in Equation 1.
 
-$$\begin{equation}
-    T = 
-    \begin{pmatrix}
-        Enc_{k_i^0, k_j^0}(k_t^0) \\
-        Enc_{k_i^0, k_j^1}(k_t^0) \\
-        Enc_{k_i^1, k_j^0}(k_t^0) \\
-        Enc_{k_i^1, k_j^1}(k_t^1) \\
-    \end{pmatrix}
-\end{equation}$$
+![Equation 1](posts/privacy-graph/images/3.png)
 
 The garbler can send the table to the second party, called *evaluator*, together with his chosen input key and the input key that corresponds to the choice of the evaluator, which is determined via Oblivious Transfer. In this way, both parties do not learn the chosen input bit of the other party. The evaluator can now use both input keys to decrypt exactly one row in the table correctly to obtain the associated output key. The output keys are appended with a certain number of trailing zeros, so that they can be differentiated from random strings and the evaluator knows that the right row was decrypted. Note that when the garbler permutates the order of the rows in the look-up table beforehand, the evaluator cannot deduce the corresponding output bit. Following in that manner, a whole boolean circuit can be evaluated recursively. The garbler's operations are easily parallelizable, but evaluating the garbled circuit must be done layer by layer and therefore, the degree of parallelization during the evaluation depends on the depth of the circuit.
 
@@ -98,7 +90,7 @@ Now we consider N processors that make oblivious accesses to shared memory and d
 2. Gather consists of an oblivious sort and an aggregate operation. Oblivious Sort is a $log(|V| + |E|)$-deep circuit [6] and can, therefore, be trivially parallelized at the circuit level. Hence, we focus on how to parallelize the aggregate operation. Instead of doing a linear scan like in the sequential version, each processor is assigned one tuple in the list and needs to compute the sum of the longest prefix of edges preceding that tuple using the aggregation operator $\oplus$. Again, the longest preceding prefix of edges would be the list of all incoming edges, after having performed the oblivious *destination sort*. If the tuple that the processor got assigned to is a vertex, it can update its data with the computed sum. The way the processors compute the sum over the longest prefix of edges is a bottom-up approach: At time step $\tau$, each processor only computes the sum over the immediately preceding segment of tuples of size $2^\tau$. That is, at $\tau = 1$, it only computes the sum over the two preceding tuples, at $\tau = 2$ over the 4 preceding tuples, a.s.o, until it covered the total length of the list, in $log(|V| + |E|)$ steps. Note that the sum over each segment, e.g., of size 8, can be determined by combining the already computed values of the two segments of size 4 that form the left and right half of the larger segment: Either aggregate both their sums if no vertex appeared yet in the right half, or take the sum of the right half as the result. 
 3. For Scatter, similarly, we only need to focus on how to parallelize the propagate operation. To repeat, a propagate operation updates each edge with the data of the nearest preceding vertex, which is the vertex that edge is originating from after having performed the oblivious *source sort*. Conveniently, a propagate operation can be expressed as an aggregate operation, when every edge stores the value of the preceding vertex if a vertex immediately precedes, and $-\infty$ otherwise. The aggregation operator is then defined to be the *max* operator. So, after $log(|V| + |E|)$ steps, each processor has computed the value of the nearest vertex and can update the value of its assigned tuple, if it is an edge.
 
-I now summarize the complexities for the parallel oblivious algorithms for each processor. For Apply, it takes $O(1)$ since every processor only evaluates a single $f_A$ or a dummy operation. Both Scatter and Gather are $O(log\ |V| + |E|)$ time. This represents a considerable blowup compared to the parallel time of insecure Scatter and Gather, which is $O(1)$ and $O(log\ d_{max})$, respectively, where $d_{max}$ denotes the maximum degree of a vertex in the graph.
+I now summarize the complexities for the parallel oblivious algorithms for each processor. For Apply, it takes $O(1)$ since every processor only evaluates a single $f_A$ or a dummy operation. Both Scatter and Gather are $O(log |V| + |E|)$ time. This represents a considerable blowup compared to the parallel time of insecure Scatter and Gather, which is $O(1)$ and $O(log d_m)$, respectively, where $d_m$ denotes the maximum degree of a vertex in the graph.
 
 ## 3.3 Parallel Secure Algorithms
 
@@ -127,13 +119,7 @@ Now, I want to provide more information on the the protocols used for secure sor
 
 The input to the shuffle protocol is a sharing of a list of tuples $T = A \oplus B \oplus C$. The goal is to produce a new sharing $T_O = A_O \oplus B_O \oplus C_O = \pi(T)$, which is a random permutation of $T$. To ensure that none of the participating servers S1, S2, or S3 can learn the permutation $\pi$, the basic shuffle protocol is constructed such that the first two servers generate a random permutation, which the third server does not learn. This basic protocol has to be repeated three times. In each round another server does not learn the permutation, such that in the end, none of the servers can single-handedly reconstruct the permutation $\pi$:
 
-$$\begin{equation}
-  \begin{array}{l}
-   (1)\;  T1 = Shuffle(T, S1, S2, S3) \\
-   (2)\; T2 = Shuffle(T, S2, S3, S1) \\
-   (3)\; T3 = Shuffle(T, S3, S1, S2) \\
-  \end{array}
-\end{equation}$$
+![Equation 2](posts/privacy-graph/images/5.png)
 
 In the first round, S3 does not learn the random permutation chosen by S1 and S2, in the second round S1, and in the third round S2. We will now go through the basic protocol (cf. Fig. 2) in the first round:
 
@@ -143,9 +129,9 @@ Fig.2 - Basic Shuffle Protocol
 </p>
 
 1. The list of tuples $T$ is shared in a 2-out-3 sharing. Each server knows two out of the three shares $A$, $B$, and $C$. At the end of the protocol, each server should learn two out of the three output shares $A_O$, $B_O$, and $C_O$. The output shares combined will be chosen to yield a permutation of the original list of tuples:  $A_O \oplus B_O \oplus C_O = \pi(A \oplus B \oplus C) = \pi(T)$.
-2. Each pair of servers $S_i$, $S_j$ holds a common secret $s_{ij}$.
-3. S1 and S2 use their shared secret $s_{12}$ to derive a permutation function $\pi$ and use it to compute a shuffle of their respective shares. S3 does not know $s_{12}$ and, therefore, does not know the shuffle of the individual shares.
-4. S3 uses its two secrets, $s_{23}$ and $s_{31}$, to derive two random values that also serve as two of the output shares, $C_O$ and $A_O$. $A_O$ can be computed by S1, and $C_O$ can be computed by S2, because they share the respective secret with S3.
+2. Each pair of servers $S_i$, $S_j$ holds a common secret $s-ij$.
+3. S1 and S2 use their shared secret $s-12$ to derive a permutation function $\pi$ and use it to compute a shuffle of their respective shares. S3 does not know $s-12$ and, therefore, does not know the shuffle of the individual shares.
+4. S3 uses its two secrets, $s-23$ and $s-31$, to derive two random values that also serve as two of the output shares, $C_O$ and $A_O$. $A_O$ can be computed by S1, and $C_O$ can be computed by S2, because they share the respective secret with S3.
 5. $A_O$ is used by S1 as a masking value to send the shuffle of $A$ to S2. S2 does the same with the shuffle of C and $C_O$.
 6. Now both can compute $B_O$. Highlighted in yellow, one can see that $B_O$ contains the permutation of all three shares $A$, $B$, and $C$, which is revealed when XORing $B_O$ with the two other shares $A_O$ and $C_O$.
 7. The result is that each server knows two out of the three shuffled output shares, which combined yield a permutation of the initial list of tuples $T$. Moreover, only S1 and S2 know the permutation function $\pi$ that created the shuffled shares.
@@ -161,9 +147,9 @@ Fig.3 - 2-Round Shuffle Protocol
 
 Araki et al. also present a more efficient 2-round, 4-message, shuffle protocol for which no extension to full security is given (cf. Fig. 3):
 
-1. Again, the list of tuples is shared in a 2-out-of-3 sharing between the three servers. Each pair of servers $S_i$, $S_j$ shares a common secret $s_{ij}$.
-2. The servers use their secrets to generate permutations $\pi_{ij}$, random values, $\tilde{A}$ and $\tilde{B}$, that serve as output shares later, and values $Z_{ij}$ used for masking permutations of the shares A, B, and C, that need to be exchanged between the servers.
-3. The goal is to generate shares $\tilde{A} \oplus\tilde{B} \oplus \tilde{C} = \pi_{23} \circ \pi_{31} \circ \pi_{12}(A \oplus B \oplus C)$. Note that none of the servers knows all three permutations $\pi_{ij}$, so the result is a secure shuffle. In the subsequent steps, the servers apply the permutations $\pi_{ij}$ to their shares (highlighted blue for $\pi_{12}$, red for $\pi_{31}$, and yellow for $\pi_{23}$ in Fig. 3) and apply the respective masking value $Z_{ij}$ before sending them to other servers. Each masking value $Z_{12}$, $Z_{31}$, and $Z_{23}$ is used by two servers, ensuring that they cancel out when the individual shares are combined at the end.
+1. Again, the list of tuples is shared in a 2-out-of-3 sharing between the three servers. Each pair of servers $S_i$, $S_j$ shares a common secret $s-ij$.
+2. The servers use their secrets to generate permutations $\pi-ij$, random values, $\tilde{A}$ and $\tilde{B}$, that serve as output shares later, and values $Z-ij$ used for masking permutations of the shares A, B, and C, that need to be exchanged between the servers.
+3. The goal is to generate shares $\tilde{A} \oplus\tilde{B} \oplus \tilde{C} = \pi_{23} \circ \pi-31 \circ \pi-12(A \oplus B \oplus C)$. Note that none of the servers knows all three permutations $\pi-ij$, so the result is a secure shuffle. In the subsequent steps, the servers apply the permutations $\pi-ij$ to their shares (highlighted blue for $\pi-12$, red for $\pi-31$, and yellow for $\pi-23$ in Fig. 3) and apply the respective masking value $Z-ij$ before sending them to other servers. Each masking value $Z-12$, $Z-31$, and $Z-23$ is used by two servers, ensuring that they cancel out when the individual shares are combined at the end.
 4. After all these steps, S2 has received $X_3$, which contains $\pi(A \oplus B)$ with all three masking values Z. S3 received $Y_3$, which contains $\pi(C)$ with all three masking values Z.
 5. Both have to apply one of the random output shares $\tilde{B}$ and $\tilde{A}$ respectively and when the results are put together, this yields the last output share $\tilde{C}$, where all masking values $Z$ cancel out and $\tilde{A} \oplus\tilde{B} \oplus \tilde{C} = \pi(A \oplus B \oplus C)$ as intended.
 
