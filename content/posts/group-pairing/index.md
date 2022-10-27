@@ -154,17 +154,13 @@ The paper suggests extracting common key bits using the wireless channel. Specif
 
 ![Password Extraction](posts/group-pairing/images/7.png)
 
-The users form a logical ring and perform the password extraction algorithm, e.g., via the shared properties of the wireless channel. User $U_i$ acquires two short passwords $pw_i,i-1$ with $U_i-1$ and $pw_i,i+1$ with $U_i+1$.
+The users form a logical ring and perform the password extraction algorithm, e.g., via the shared properties of the wireless channel. User $U_i$ acquires two short passwords, one with $U_i-1$ and one with $U_i+1$.
 
-Now, any secure pairwise password authenticated key exchange can be employed, so that $U_i$ can obtain two secret values $K_i^l$ and $K_i^r$ with his respective neighbors in the logical ring. $U_i$ computes 
-
-$$V_i^l = K_i^l * H(K_i^r), V_i^r = K_i^r * H(K_i^l)$$
-
-and 
+Now, any secure pairwise password authenticated key exchange can be employed, so that $U_i$ can obtain two secret values $K_i^l$ and $K_i^r$ with his respective neighbors in the logical ring. $U_i$ computes $V_i^l = K_i^l * H(K_i^r), V_i^r = K_i^r * H(K_i^l)$ and $X_i = H(K_i^l) \oplus H(K_i^r)$.
  
-$$X_i = H(K_i^l) \oplus H(K_i^r)$$
- 
-Then, at the end he broadcasts $ m_i = < U_i , U\textsubscript{i-1} , V_i^l ; U_i , U\textsubscript{i+1}, V_i^r ; X_i > $
+Then, at the end he broadcasts 
+
+$$ m_i = < U_i , U_i-1 , V_i^l ; U_i , U_i+1, V_i^r ; X_i > $$
 
 and saves the exchanged messages $m_i$. In order to establish a group key, each user first authenticates his neighbors in the logical ring and checks if $X_1 \oplus X_2 \oplus \dots \oplus X_n = 0$.
 
@@ -175,9 +171,9 @@ $X_5 = H(K_6^l) \oplus E_6^l = H(K_6^l) \oplus H(K_5^l) = H(K_5^r) \oplus H(K_5^
 
 If this verification succeeds, he sets $K_i = H(K_i^l)$ and can compute the other n - 1 values 
 
-$$K_k = H(K_i^l) \oplus X_m \oplus \dots X_k$$
+$$K_i-j = H(K_i^l) \oplus X_i-1 \oplus \dots X_i-j$$
 
-where $m = i - 1, k = i - j, j = 1, \dots, n-1$. As an example how $U_6$ can compute
+where $j = 1, \dots, n-1$. As an example how $U_6$ can compute
 
 $$K_4 = H(K_6^l) \oplus X_5 \oplus X_4 = H(K_6^l) \oplus H(K_5^l) \oplus H(K_5^r) \oplus H(K_4^l) \oplus H(K_4^r) = H(K_4^l)$$
 
