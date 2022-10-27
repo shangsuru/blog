@@ -164,17 +164,13 @@ and
  
 $$X_i = H(K_i^l) \oplus H(K_i^r)$$
  
-Then, at the end he broadcasts 
+Then, at the end he broadcasts $ m_i = <U_i, U\textsubscript{i-1}, V_i^l;U_i,U\textsubscript{i+1}, V_i^r; X_i> $
 
-$$m_i = <U_i, U_{i-1}, V_i^l;U_i,U_{i+1}, V_i^r; X_i>$$ 
-
-and saves the exchanged messages $m_i$. In order to establish a group key, each user first authenticates his neighbors in the logical ring and checks if 
-
-$$X_1 \oplus X_2 \oplus \dots \oplus X_n = 0$$ 
+and saves the exchanged messages $m_i$. In order to establish a group key, each user first authenticates his neighbors in the logical ring and checks if $X_1 \oplus X_2 \oplus \dots \oplus X_n = 0$.
 
 E.g., for $U_6$ to verify $U_5$, he computes 
 $E_6^l = V_5^r / K_6^l$. 
-As a reminder, per definition, $V_5^r = K_5^r * H(K_5^l) = K_6^l * H(K_5^l)$, therefore $E_6^l = H(K_5^l)$. So he has to check if 
+ As a reminder, per definition, $V_5^r = K_5^r * H(K_5^l) = K_6^l * H(K_5^l)$, therefore $E_6^l = H(K_5^l)$. So he has to check if 
 
 $$X_5 = H(K_6^l) \oplus E_6^l = H(K_6^l) \oplus H(K_5^l) = H(K_5^r) \oplus H(K_5^l)$$
 
