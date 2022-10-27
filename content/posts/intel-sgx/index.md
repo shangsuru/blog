@@ -1,6 +1,6 @@
 ---
 title: "An Introduction to Intel SGX"
-description: "Explaining the concept of Trusted Execution Environments."
+description: "Explaining the concept of trusted execution environments."
 tags: [system security]
 date: 2021-12-14
 math: true

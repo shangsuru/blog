@@ -1,6 +1,6 @@
 ---
 title: "Privacy-Preserving Graph Analytics"
-description: "Secure Multi-Party Computation combined with large-scale Graph Analysis Frameworks."
+description: "Secure multi party computation combined with large-scale graph analysis frameworks."
 tags: [cryptography]
 date: 2022-03-22
 math: true
