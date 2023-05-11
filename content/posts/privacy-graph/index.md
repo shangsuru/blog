@@ -12,6 +12,8 @@ A huge challenge in today's society is utilizing private data without revealing 
 
 Graphs can be used to efficiently model large varieties of data, from social networks, disease spread or transactions in payment networks. Also, many machine learning solutions like recommender systems run on data in the form of graphs. Since these problems tend to entail large amounts of data, systems have to be designed to be scalable and highly parallelizable. As in all fields of data analysis, also graph analysis often relies on private, sensitive user input. To protect privacy, Secure Multi-Party Computation (MPC) can be used. One main challenge hereby is to make the employed protocols highly parallelizable, so that the solution scales to the massive size of the input data sets, while not leaking anything about the data or even the topology of the graph.
 
+![MPC and Graph Analytics](posts/privacy-graph/images/mpc.png)
+
 *Outline.* In §2, I define the notion of MPC along with its security definition and give an introduction to a prominent example of a MPC technique: Yao's Garbled Circuits. In §3 and §4, I summarize the contributions of Nayak et al. [1] and Araki et al. [2], respectively. 
 §5 outlines the limitations of the current privacy-preserving graph analytics frameworks and offers pointers to possible future research directions.
 
@@ -63,6 +65,8 @@ In the following, I represent the simple programming abstraction for parallel co
 
 In this way, each vertex can perform computation on its own data and the data of its adjacent edges in parallel with the other vertices, providing a suitable interface for parallel graph computations. What is missing is that those operations should also be carried out in a privacy-preserving manner, hiding both inputs and the topology of the underlying graph. Solutions to this are described in the next section.
 
+![Graph Operations](posts/privacy-graph/images/graphoperations.png)
+
 # 3 GraphSC: Parallel Secure Computation Made Easy
 
 In this section, I outline the works of [1]. The focus is on how the discussed Scatter, Gather and Apply operations are realized in an oblivious manner and how they are parallelized. The graph algorithms are considered oblivious, if their accesses to memory locations are the same for any two input graphs. That means, the algorithms have to be completely incognizant of the underlying graph structure.
@@ -73,6 +77,8 @@ GraphSC is a parallel secure computation framework that combines efficient compu
 ## 3.1 Single-Processor Oblivious Algorithms
 
 I start by discussing the oblivious variations of algorithms for Scatter, Gather, and Apply in the single-processor setting. To hide the graph structure, the graph needs to be represented in a way that does not disambiguate between edges and vertices. I, henceforth, treat a graph as a list of data tuples of the same size containing a bit that tells if the tuple represents an edge or a vertex.
+
+![Single-Processor Oblivious Algorithms](posts/privacy-graph/images/singleprocessor.png)
 
 
 1. Apply is straightforward: Make a linear scan over the list and apply the function $f_A$ to each vertex tuple and a dummy operation on each edge tuple.
@@ -85,6 +91,8 @@ Let $M := |V| + |E|$. When we assume that each $f_A$, $f_S$, and $\oplus$ are of
 
 Now we consider N processors that make oblivious accesses to shared memory and describe how we can parallelize the oblivious algorithms for Scatter, Gather, and Apply. We set the number of processors to be the optimal N := |V| + |E|. Descriptions for the algorithms with a smaller number of processors can be found in the original paper [1], in §3E. Recall again that the difficulty in the design of the parallelized algorithms is that each processor should access the tuples in the list in the same way, independent on the structure of the graph, i.e., if it is a vertex or edge or how many edges a vertex has.
 
+![Parallel Oblivious Algorithms](posts/privacy-graph/images/parallel.png)
+
 
 1. Apply can be trivially parallelized, each processor is assigned a tuple and applies $f_A$ or a dummy operation, depending on if it is a vertex or an edge.
 2. Gather consists of an oblivious sort and an aggregate operation. Oblivious Sort is a $log(|V| + |E|)$-deep circuit [6] and can, therefore, be trivially parallelized at the circuit level. Hence, we focus on how to parallelize the aggregate operation. Instead of doing a linear scan like in the sequential version, each processor is assigned one tuple in the list and needs to compute the sum of the longest prefix of edges preceding that tuple using the aggregation operator $\oplus$. Again, the longest preceding prefix of edges would be the list of all incoming edges, after having performed the oblivious *destination sort*. If the tuple that the processor got assigned to is a vertex, it can update its data with the computed sum. The way the processors compute the sum over the longest prefix of edges is a bottom-up approach: At time step $\tau$, each processor only computes the sum over the immediately preceding segment of tuples of size $2^\tau$. That is, at $\tau = 1$, it only computes the sum over the two preceding tuples, at $\tau = 2$ over the 4 preceding tuples, a.s.o, until it covered the total length of the list, in $log(|V| + |E|)$ steps. Note that the sum over each segment, e.g., of size 8, can be determined by combining the already computed values of the two segments of size 4 that form the left and right half of the larger segment: Either aggregate both their sums if no vertex appeared yet in the right half, or take the sum of the right half as the result. 
@@ -93,6 +101,8 @@ Now we consider N processors that make oblivious accesses to shared memory and d
 I now summarize the complexities for the parallel oblivious algorithms for each processor. For Apply, it takes $O(1)$ since every processor only evaluates a single $f_A$ or a dummy operation. Both Scatter and Gather are $O(log |V| + |E|)$ time. This represents a considerable blowup compared to the parallel time of insecure Scatter and Gather, which is $O(1)$ and $O(log d_m)$, respectively, where $d_m$ denotes the maximum degree of a vertex in the graph.
 
 ## 3.3 Parallel Secure Algorithms
+
+![Parallel Secure Algorithms](posts/privacy-graph/images/yao.png)
 
 The reduction from parallel oblivious algorithms to parallel secure algorithms can now be simply achieved by making use of a garbled circuit backend. The oblivious algorithms are represented as a circuit. One party acts as the garbler and the other as the evaluator, while the sensitive data is secret shared between the two parties. Each party parallelizes the computational task, garbling and evaluating the circuit, across its processors.
 
