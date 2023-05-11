@@ -52,15 +52,7 @@ When verifying neural networks, there are several possible correctness propertie
 
 In the following sections we will focus on robustness. What we need is a language for formally specifying the properties we want the neural network to have. The specification will have the following form:
 
-\[
-\textcolor{blue}{ \{ precondition \} }
-\]
-\[
- r \longleftarrow f(x) \\
-\]
-\[
-\textcolor{blue}{ \{ postcondition \} } \\
-\]
+![Correctness Property](posts/formal-dnn/images/pcpc.png)
 
 This way we can also express the desired robustness properties. Robustness is a broad class of properties though. We can specify robustness with respect to various factors like change of brightness, contrast, rotation, etc. For a concrete example, Figure \ref{fig:mnist} shows a hand-written 7 from the MNIST dataset along with two modified versions: One has its brightness increased and on the other one a spurious dot is added. Despite the minor changes, all images should be classified as 7 to satisfy the robustness property.
 
@@ -71,15 +63,11 @@ Fig.2 - MNIST image with different perturbations
 
 We can use our notation in the following way:
 
-\[ \textcolor{blue}{\{ |x - c| \leq 0.1 \}} \]
-\[ r1 \longleftarrow f(x) \]
-\[ r2 \longleftarrow f(c) \]
-\[ \textcolor{blue}{\{ class(r1) = class(r2) \}} \]
+![Robustness Property](posts/formal-dnn/images/robustnessproperty.png)
 
 Which norm we use depends on the type of robustness we want to verify. For example, we could use the following two norms:
 
-\[\ell_2 = \sqrt{\sum_i |z_i|^2} \]
-\[\ell_{\infty} = max_i |z_i| \]
+![Norms](posts/formal-dnn/images/norms.png)
 
 The $\ell_2$ norm can be understood as the straight line between two images in $\mathcal{R}^n$, while $\ell_{\infty}$ is the largest discrepancy between two images. If we want to represent the set of all images that are like c, but where each pixel differs by a certain brightness amount, then we can use the $\ell_{\infty}$ in the precondition. This is because the $\ell_{\infty}$ captures the maximum discrepancy a pixel in c can withstand. 
 
@@ -105,25 +93,14 @@ LRA extends FOL by adding the following symbols: real numbers, addition, subtrac
 
 To encode a neural network in FOL with LRA, we will first start encoding each node $v$ separately as a formula $F_v$ that relates the output $v^o$ of the node with it's inputs $v^{in, 1}$, $v^{in, 2}$ a.s.o. As an example, we can formalize a node that computes the ReLU function in the following way:
 
-\[
-ReLU(x) = \begin{cases}
-0, & \text{if}\ x \leq 0 \\
-x, & \text{if}\ x > 0 \\
-\end{cases}
-\]
-
-\[
-F_v \triangleq (v^{in, 1} > 0 \Rightarrow v^o = v^{in,1}) \land (v^{in, 1} \leq 0 \Rightarrow v^o = 0)
-\]
+![RELU](posts/formal-dnn/images/relu.png)
 
 Next, we need to encode the edges between the nodes. This is straight forward as we just need to set each output variable of a node equal to the input variable of the node the corresponding edge is pointing to.
 Then, we build the conjunction overall node formulas and edge formulas, which gives us the encoding of the entire network $F_G$. In this way, we cannot encode non-linear activation functions directly. The only way we can handle them is through over approximation.
 
 Lastly, we have to include the correctness property. The final formula will have the following form:
 
-\[
-Precondition\ \land F_G\ \implies Postcondition
-\]
+![DNN Encoding](posts/formal-dnn/images/correctnessproperty.png)
 
 ## Neural Network Solvers
 
@@ -158,11 +135,10 @@ Fig.5 - Simplex example
 
 Let's say we have the following linear constraints:
 
-\begin{enumerate}
-    \item $x + y \geq 0$
-    \item $-2x + y \geq 2$
-    \item $-10x + y \geq -5$
-\end{enumerate}
+- $x + y \geq 0$
+- $-2x + y \geq 2$
+- $-10x + y \geq -5$
+
 
 The constraints are visualized in Figure \ref{fig:simplex} and the area marked red is representing satisfying examples of x and y. We will begin with the initial interpretation that sets both x and y to 0, which is not a model of the formula, since constraint 2 is violated. We can decrease x to -1, but then we notice that constraint 1 is violated. To fix this, we can increase y to 2/3, a.s.o. until we arrive at a satisfying assignment, x = -2/3, y = 2/3. How to exactly adapt which variables and how to ensure termination of the algorithm is a detail we don't cover here, but can be read in detail in the corresponding paper.
 
