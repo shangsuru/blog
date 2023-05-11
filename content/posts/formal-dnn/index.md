@@ -1,5 +1,5 @@
 ---
-title: "Robustness Verification of Neural Networks"
+title: "Verification of Neural Networks"
 description: "Applying formal methods to make neural networks safer and more reliable"
 tags: [formal-methods, machine-learning]
 date: 2023-05-10
