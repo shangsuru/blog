@@ -15,7 +15,6 @@ I've been programming since 2018, primarily using Javascript and Python or Java/
 This blog will feature technical topics, including both theoretical and applied concepts, as well as projects I have worked on.
 
 ## Upcoming Blog Posts
-- Robustness Verification of Neural Networks
 - Finding vulnerabilities in code with CodeQL
 - Distributed Systems Series (GFS, BigTable, DynamoDB, Cassandra, Chubby)
 - Model Checking and Hyperproperties
