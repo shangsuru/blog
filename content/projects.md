@@ -4,6 +4,31 @@ date: 2023-05-10
 type: "page"
 ---
 
+### 2023
+- [Multiplayer Go Game](#multiplayer-go-game-(2023))
+
+### 2022
+- Sign Enclave 
+- Keylogger 
+- ARP Spoofer
+
+### 2021
+- CAPTCHA Breaker
+- NAS scheduler
+
+### 2020
+- Quiz against JS
+- Weather App
+- Digits Classifier
+- Auto Estate Agent
+
+### 2019
+- Traveling Salesman
+- Tic-Tac-Toe AI
+- Sudoku Solver
+- Tower of Hanoi
+- Convex Hull Algorithm
+
 # Multiplayer Go Game (2023)
 
 **Technologies**: AWS CDK, React, Amplify UI
