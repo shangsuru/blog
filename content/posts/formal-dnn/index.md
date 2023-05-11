@@ -54,7 +54,7 @@ In the following sections we will focus on robustness. What we need is a languag
 
 ![Correctness Property](posts/formal-dnn/images/pcpc.png)
 
-This way we can also express the desired robustness properties. Robustness is a broad class of properties though. We can specify robustness with respect to various factors like change of brightness, contrast, rotation, etc. For a concrete example, Figure \ref{fig:mnist} shows a hand-written 7 from the MNIST dataset along with two modified versions: One has its brightness increased and on the other one a spurious dot is added. Despite the minor changes, all images should be classified as 7 to satisfy the robustness property.
+This way we can also express the desired robustness properties. Robustness is a broad class of properties though. We can specify robustness with respect to various factors like change of brightness, contrast, rotation, etc. For a concrete example, Figure 2 shows a hand-written 7 from the MNIST dataset along with two modified versions: One has its brightness increased and on the other one a spurious dot is added. Despite the minor changes, all images should be classified as 7 to satisfy the robustness property.
 
 ![MNIST image with different perturbations](posts/formal-dnn/images/mnist.png)
 <p align = "center">
@@ -69,9 +69,9 @@ Which norm we use depends on the type of robustness we want to verify. For examp
 
 ![Norms](posts/formal-dnn/images/norms.png)
 
-The $l_{2}$ norm can be understood as the straight line between two images in $\mathcal{R}^n$, while $\l_{\infty}$ is the largest discrepancy between two images. If we want to represent the set of all images that are like c, but where each pixel differs by a certain brightness amount, then we can use the $\l_{\infty}$ in the precondition. This is because the $l_{\infty}$ captures the maximum discrepancy a pixel in c can withstand. 
+The $l_2$ norm can be understood as the straight line between two images in $\mathcal{R}^n$, while $\l_{\infty}$ is the largest discrepancy between two images. If we want to represent the set of all images that are like c, but where each pixel differs by a certain brightness amount, then we can use the $\l_{\infty}$ in the precondition. This is because the $l_{\infty}$ captures the maximum discrepancy a pixel in c can withstand. 
 
-If we want to represent all images that are like c but there is a small region that has a very different brightness, due to a spurious dot in the image, then we should not use $\l_{\infty}$ norm, because it bounds the brightness difference for all pixels, but not some pixels. The brightness difference that results in the white dot is extreme, from 0 (black) to 1 (white). That is why instead we use the $\l_{2}$ norm. 
+If we want to represent all images that are like c but there is a small region that has a very different brightness, due to a spurious dot in the image, then we should not use $\l_{\infty}$ norm, because it bounds the brightness difference for all pixels, but not some pixels. The brightness difference that results in the white dot is extreme, from 0 (black) to 1 (white). That is why instead we use the $\l_2$ norm. 
 
 # Constraint-Based Verification
 
@@ -140,7 +140,7 @@ Let's say we have the following linear constraints:
 - $-10x + y \geq -5$
 
 
-The constraints are visualized in Figure \ref{fig:simplex} and the area marked red is representing satisfying examples of x and y. We will begin with the initial interpretation that sets both x and y to 0, which is not a model of the formula, since constraint 2 is violated. We can decrease x to -1, but then we notice that constraint 1 is violated. To fix this, we can increase y to 2/3, a.s.o. until we arrive at a satisfying assignment, x = -2/3, y = 2/3. How to exactly adapt which variables and how to ensure termination of the algorithm is a detail we don't cover here, but can be read in detail in the corresponding paper.
+The constraints are visualized in Figure 5 and the area marked red is representing satisfying examples of x and y. We will begin with the initial interpretation that sets both x and y to 0, which is not a model of the formula, since constraint 2 is violated. We can decrease x to -1, but then we notice that constraint 1 is violated. To fix this, we can increase y to 2/3, a.s.o. until we arrive at a satisfying assignment, x = -2/3, y = 2/3. How to exactly adapt which variables and how to ensure termination of the algorithm is a detail we don't cover here, but can be read in detail in the corresponding paper.
 
 To increase the performance of the outlined approach for neural network verification and make the solution scale to larger networks, Katz et al. proposed an extension to the Simplex algorithm, called [Reluplex](https://arxiv.org/pdf/1702.01135.pdf&xid=25657,15700023,15700124,15700149,15700186,15700191,15700201,15700237,15700242.pdf). The problem with the previous aproach is that piece-wise linear activation functions like ReLU will be encoded  as disjunctions, increasing the number of cases the DPLL algorithm needs to handle exponentially in the number of ReLUs. To fix this issue, Reluplex natively handles the ReLU constraints within Simplex in addition to the linear constraints. Their work eventually results in a state of the art SMT-based neural network verification solver, called [Marabou](https://github.com/NeuralNetworkVerification/Marabou).
 
