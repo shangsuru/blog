@@ -59,13 +59,13 @@ Many problems require large-scale graphs for which we need efficient processing.
 
 In the following, I represent the simple programming abstraction for parallel computations on graphs, found in works like Pregel [3] and Graphlab [4], that also underpins the two papers I want to present. Operations are carried out on a data-augmented graph, that is a directed graph with user-defined data on each vertex and edge. The three operations used are:
 
+![Graph Operations](posts/privacy-graph/images/graphoperations.png)
+
 1. Apply: Vertices apply a user-defined function $f_A$ on their data and update it with the result.
 2. Gather: Vertices aggregate the data of their incoming edges, via a user-provided aggregation operator $\oplus$, and update their own data with it.  The aggregation operator has to be commutative and associative, so that the result of the aggregation is not dependent on the ordering of the edges.
 3. Scatter: Vertices propagate their data to all outgoing edges, and update the edges data according to some user-specified function $f_S$.
 
 In this way, each vertex can perform computation on its own data and the data of its adjacent edges in parallel with the other vertices, providing a suitable interface for parallel graph computations. What is missing is that those operations should also be carried out in a privacy-preserving manner, hiding both inputs and the topology of the underlying graph. Solutions to this are described in the next section.
-
-![Graph Operations](posts/privacy-graph/images/graphoperations.png)
 
 # 3 GraphSC: Parallel Secure Computation Made Easy
 
