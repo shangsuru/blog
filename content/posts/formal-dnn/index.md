@@ -69,9 +69,9 @@ Which norm we use depends on the type of robustness we want to verify. For examp
 
 ![Norms](posts/formal-dnn/images/norms.png)
 
-The $l_2$ norm can be understood as the straight line between two images in $\mathcal{R}^n$, while $\l_{\infty}$ is the largest discrepancy between two images. If we want to represent the set of all images that are like c, but where each pixel differs by a certain brightness amount, then we can use the $\l_{\infty}$ in the precondition. This is because the $l_{\infty}$ captures the maximum discrepancy a pixel in c can withstand. 
+The $l_{2}$ norm can be understood as the straight line between two images in $\mathcal{R}^n$, while $\l_{\infty}$ is the largest discrepancy between two images. If we want to represent the set of all images that are like c, but where each pixel differs by a certain brightness amount, then we can use the $\l_{\infty}$ in the precondition. This is because the $l_{\infty}$ captures the maximum discrepancy a pixel in c can withstand. 
 
-If we want to represent all images that are like c but there is a small region that has a very different brightness, due to a spurious dot in the image, then we should not use $\l_{\infty}$ norm, because it bounds the brightness difference for all pixels, but not some pixels. The brightness difference that results in the white dot is extreme, from 0 (black) to 1 (white). That is why instead we use the $\l_2$ norm. 
+If we want to represent all images that are like c but there is a small region that has a very different brightness, due to a spurious dot in the image, then we should not use $\l_{\infty}$ norm, because it bounds the brightness difference for all pixels, but not some pixels. The brightness difference that results in the white dot is extreme, from 0 (black) to 1 (white). That is why instead we use the $\l_{2}$ norm. 
 
 # Constraint-Based Verification
 
