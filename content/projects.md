@@ -5,7 +5,7 @@ type: "page"
 ---
 
 - 2023: [Multiplayer Go Game](projects#multiplayer-go-game-2023)
-- 2022: [Sign Enclave](projects#sign-enclave-2022), [Keylogger](projects#keylogger-2022), [ARP Spoofer](projects#arp-spoofer-2022)
+- 2022: [Verifiable Lock Manager](projects#verifiable-lock-manager-2022), [Sign Enclave](projects#sign-enclave-2022), [Keylogger](projects#keylogger-2022), [ARP Spoofer](projects#arp-spoofer-2022)
 - 2021: [CAPTCHA Breaker](projects#captcha-breaker-2021), [NAS scheduler](projects#nas-scheduler-2021)
 - 2020: [Quiz against JS](projects#quiz-against-js-2020), [Weather App](projects#weather-app-2020), [Digits Classifier](projects#digits-classifier-2020), [Auto Estate Agent](projects#auto-estate-agent-2020)
 - 2019: [Traveling Salesman](projects#traveling-salesman-2019), [Tic-Tac-Toe AI](projects#tic-tac-toe-ai-2019), [Sudoku Solver](projects#sudoku-solver-2019), [Tower of Hanoi](projects#tower-of-hanoi-2019), [Convex Hull Algorithm](projects#convex-hull-algorithm-2019)
@@ -17,6 +17,15 @@ type: "page"
 **Description**: The game of Go is a two-player abstract strategy board game in which players aim to surround more territory than their opponent. Players can host games of different board size and duration and play against each other to increase their rating!
 
 [<img src="images/go.png">](https://github.com/shangsuru/go-game-cdk)
+
+
+# Verifiable Lock Manager (2022)
+
+**Technologies**: C++, Intel SGX, CMake
+
+**Description**: My bachelor thesis, a centralized lock manager component inside a Trusted Execution Environment to enforce a locking-based concurrency control scheme that is Byzantine fault-tolerant. It is envisioned to be used within [TrustDBle](https://scfab.github.io/2020/FAB2020_p7.pdf), a DBMS based on Blockchain that can be used for shared access by multiple parties.
+
+[<img src="images/lockmanager.png">](https://github.com/shangsuru/verifiable-lockmanager)
 
 # Sign Enclave (2022)
 
