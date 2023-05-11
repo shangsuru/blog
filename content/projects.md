@@ -4,11 +4,11 @@ date: 2023-05-10
 type: "page"
 ---
 
-2023: [Multiplayer Go Game](projects#multiplayer-go-game-2023)
-2022: [Sign Enclave](projects#sign-enclave-2022), [Keylogger](projects#keylogger-2022), [ARP Spoofer](projects#arp-spoofer-2022)
-2021: [CAPTCHA Breaker](projects#captcha-breaker-2021), [NAS scheduler](projects#nas-scheduler-2021)
-2020: [Quiz against JS](projects#quiz-against-js-2020), [Weather App](projects#weather-app-2020), [Digits Classifier](projects#digits-classifier-2020), [Auto Estate Agent](projects#auto-estate-agent-2020)
-2019: [Traveling Salesman](projects#traveling-salesman-2019), [Tic-Tac-Toe AI](projects#tic-tac-toe-ai-2019), [Sudoku Solver](projects#sudoku-solver-2019), [Tower of Hanoi](projects#tower-of-hanoi-2019), [Convex Hull Algorithm](projects#convex-hull-algorithm-2019)
+- 2023: [Multiplayer Go Game](projects#multiplayer-go-game-2023)
+- 2022: [Sign Enclave](projects#sign-enclave-2022), [Keylogger](projects#keylogger-2022), [ARP Spoofer](projects#arp-spoofer-2022)
+- 2021: [CAPTCHA Breaker](projects#captcha-breaker-2021), [NAS scheduler](projects#nas-scheduler-2021)
+- 2020: [Quiz against JS](projects#quiz-against-js-2020), [Weather App](projects#weather-app-2020), [Digits Classifier](projects#digits-classifier-2020), [Auto Estate Agent](projects#auto-estate-agent-2020)
+- 2019: [Traveling Salesman](projects#traveling-salesman-2019), [Tic-Tac-Toe AI](projects#tic-tac-toe-ai-2019), [Sudoku Solver](projects#sudoku-solver-2019), [Tower of Hanoi](projects#tower-of-hanoi-2019), [Convex Hull Algorithm](projects#convex-hull-algorithm-2019)
 
 # Multiplayer Go Game (2023)
 
