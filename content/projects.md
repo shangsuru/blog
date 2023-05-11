@@ -4,7 +4,21 @@ date: 2023-05-10
 type: "page"
 ---
 
-This page will link to github repositories of my projects including pictures.
+# Sudoku Solver (2019)
+
+**Technologies**: Javascript, HTML, CSS
+
+**Description**: Sudoku is a logic-based puzzle that involves filling a 9x9 grid with digits from 1 to 9, such that each row, column, and 3x3 subgrid contains all the digits exactly once. It can be solved programatically using an algorithmic technique called backtracking.
+
+[<img src="images/sudoku.png">](https://github.com/shangsuru/sudoku-solver)
+
+# Tower of Hanoi (2019)
+
+**Technologies**: Javascript, HTML, CSS
+
+**Description**: The Tower of Hanoi is a classic programming puzzle that involves moving a stack of disks of different sizes from one peg to another, while no disk may be placed on top of a smaller disk. It is solved using recursion.
+
+[<img src="images/towerofhanoi.png">](https://github.com/shangsuru/tower-of-hanoi)
 
 # Convex Hull Algorithm (2019)
 
