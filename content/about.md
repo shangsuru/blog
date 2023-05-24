@@ -10,7 +10,7 @@ subsequent internship in Yokohama.
 
 Academically, my interests lie in distributed systems and security, while my practical interests revolve around backend software development and DevOps/SRE. Sometimes, I also enjoy playing CTF challenges, mostly web security related ones.
 
-I've been programming since 2018, primarily using Javascript and Python or Java/C++, while also exploring Rust/Go and functional programming languages.
+I've been programming since 2018, primarily using Javascript, Python, Java and Go.
 
 This blog will feature technical topics, including both theoretical and applied concepts, as well as projects I have worked on.
 
