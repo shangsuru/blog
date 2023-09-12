@@ -37,7 +37,7 @@ This reveals the flag.
 
 ![Susan Landau](ctf/cyberheroines/images/landau-profile.png)
 
-Susan Landau is a distinguished figure in the field of cybersecurity and digital privacy. Her most notable achievement is her influential work in advocating for strong encryption and privacy protections in the digital age. She has been a vocal proponent of safeguarding individuals' rights to secure communication and has made significant contributions to the development of encryption policies and technologies. She has testified in front of the US congress and written for the Washington Post among others.
+Susan Landau is a distinguished figure in the field of cybersecurity and digital privacy. Her most notable achievement is her influential work in advocating for strong encryption and privacy protections in the digital age. She has been a vocal proponent of safeguarding individuals' rights to secure communication and has made significant contributions to the development of encryption policies and technologies.
 
 ![Hints on the webpage](ctf/cyberheroines/images/landau-1.png)
 
@@ -86,7 +86,7 @@ Shafrira Goldwasser is a computer scientist with groundbreaking achievements in 
 
 Goldwasser's pioneering work spans various aspects of cryptography, including the development of [zero-knowledge proofs](https://www.youtube.com/watch?v=fOGdb1CTu5c), which are cryptographic methods that allow one party to prove to another that they possess certain information or knowledge without revealing the actual content of that knowledge.
 
-For this challenge, we get a webpage where we can query biography's of a given list of of female computer scientists.
+For this challenge, we get a webpage where we can query biographies of female computer scientists.
 
 ![Source code](ctf/cyberheroines/images/goldwasser-2.png)
 
@@ -106,7 +106,7 @@ ada'" && cat /flag.txt #
 
 ![Frances Allen](ctf/cyberheroines/images/allen-profile.jpg)
 
-Frances Allen was a trailblazing computer scientist known for her remarkable achievements in the field of compiler technology and parallel computing. Her most significant accomplishment was her pioneering work in optimizing compilers, which are essential software tools that translate high-level programming languages into machine code. Allen's innovations greatly improved the efficiency and performance of computer programs, making them run faster and consume fewer resources.
+Frances Allen was a trailblazing computer scientist known for her remarkable achievements in the field of compiler technology and parallel computing. Her most significant accomplishment was her pioneering work in optimizing compilers. Allen's innovations greatly improved the efficiency and performance of computer programs, making them run faster and consume fewer resources.
 
 ![Frances Allen](ctf/cyberheroines/images/allen.png)
 
