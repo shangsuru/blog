@@ -96,7 +96,7 @@ At first, it looks like a naive SQL injection, but actually it is another Comman
 
 ![In Burp](ctf/cyberheroines/images/goldwasser-3.png)
 
-Sending the request for the biography to Burp Repeater, we can substitute the _heroine_name_ parameter with the following payload and get the flag:
+Sending the request for the biography to Burp Repeater, we can substitute the _heroine-name_ parameter with the following payload and get the flag:
 
 ```
 ada'" && cat /flag.txt #
