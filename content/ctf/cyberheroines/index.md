@@ -37,7 +37,7 @@ This reveals the flag.
 
 ![Susan Landau](ctf/cyberheroines/images/landau-profile.png)
 
-Susan Landau is a distinguished figure in the field of cybersecurity and digital privacy. Her most notable achievement is her influential work in advocating for strong encryption and privacy protections in the digital age. She has been a vocal proponent of safeguarding individuals' rights to secure communication and has made significant contributions to the development of encryption policies and technologies.
+Susan Landau is a distinguished figure in the field of cybersecurity and digital privacy. Her most notable achievement is her influential work in advocating for strong encryption and privacy protections in the digital age. She has been a vocal proponent of safeguarding individuals' rights to secure communication and has made significant contributions to the development of encryption policies and technologies. She has testified in front of the US congress and written for the Washington Post among others.
 
 ![Hints on the webpage](ctf/cyberheroines/images/landau-1.png)
 
@@ -53,7 +53,7 @@ If we now go into Burp Repeater and make another request, but substituting that 
 
 ![Radia Perlman](ctf/cyberheroines/images/perlman-profile.jpg)
 
-Radia Perlman, or the "mother of the internet", is a renowned computer scientist celebrated for her groundbreaking work in the field of network protocols. Her most significant achievement is undoubtedly the creation of the Spanning Tree Protocol (STP), a fundamental protocol that ensures the stability and redundancy of computer networks.
+Radia Perlman, or the "mother of the internet", is a renowned computer scientist celebrated for her groundbreaking work in the field of network protocols. Her most significant achievement is undoubtedly the creation of the [Spanning Tree Protocol (STP)](https://www.techtarget.com/searchnetworking/definition/spanning-tree-protocol), a fundamental protocol that ensures the stability and redundancy of computer networks.
 
 In this challenge, we get presented a webpage called "My DNS App" and we get told that we can query the DNS information of any domain via the dns query parameter like so:
 
@@ -84,9 +84,7 @@ curl https://cyberheroines-web-srv3.chals.io/dns?ip=cyberheroines.ctfd.io;grep%2
 
 Shafrira Goldwasser is a computer scientist with groundbreaking achievements in the field of cryptography and theoretical computer science. One of her most significant contributions is in the development of cryptographic protocols that ensure secure communication and protect sensitive information in an increasingly digital world.
 
-Goldwasser's pioneering work spans various aspects of cryptography, including the development of zero-knowledge proofs, which are cryptographic methods that allow one party to prove to another that they possess certain information or knowledge without revealing the actual content of that knowledge.
-
-![The webpage](ctf/cyberheroines/images/goldwasser-1.png)
+Goldwasser's pioneering work spans various aspects of cryptography, including the development of [zero-knowledge proofs](https://www.youtube.com/watch?v=fOGdb1CTu5c), which are cryptographic methods that allow one party to prove to another that they possess certain information or knowledge without revealing the actual content of that knowledge.
 
 For this challenge, we get a webpage where we can query biography's of a given list of of female computer scientists.
 
