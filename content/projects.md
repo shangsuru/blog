@@ -14,7 +14,7 @@ type: "page"
 
 **Technologies**: Next.js, Typescript, Terraform, AWS, OIDC
 
-**Description**: This is a Twitter clone implemented completely in Typescript, using Next.js in the frontend and Express in the backend. A user can update his or her own profile information, and post, edit and delete tweets, including images! To login, I implemented SSO with OpenID Connect. The app data including profile information, tweets and images are stored in DynamoDB and S3.
+**Description**: This is a Twitter clone implemented completely in Typescript, using Next.js in the frontend and Express in the backend. To login, I implemented SSO with OpenID Connect. The app data including profile information, tweets and images are stored in DynamoDB and S3. The whole infrastructure including load balancing is written in Terraform.
 
 [<img src="images/twitter-clone.png">](https://github.com/shangsuru/twitter-clone)
 
