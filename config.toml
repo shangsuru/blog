@@ -61,5 +61,10 @@ name = "Linkedin"
 icon = "linkedin"
 url = "https://www.linkedin.com/in/henryhelm/"
 
+[[params.social]]
+name = "TryHackMe"
+icon = "cloud-drizzle"
+url = "https://tryhackme.com/p/eviltomatoe"
+
 [taxonomies]
    tag = "tags"
