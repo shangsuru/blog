@@ -4,20 +4,19 @@ date: 2023-05-10
 type: "page"
 ---
 
-- 2023: [Multiplayer Go Game](projects#multiplayer-go-game-2023)
+- 2023: [Twitter Clone](projects#twitter-clone-2023)
 - 2022: [Verifiable Lock Manager](projects#verifiable-lock-manager-2022), [Sign Enclave](projects#sign-enclave-2022), [Keylogger](projects#keylogger-2022), [ARP Spoofer](projects#arp-spoofer-2022)
-- 2021: [CAPTCHA Breaker](projects#captcha-breaker-2021), [NAS scheduler](projects#nas-scheduler-2021)
+- 2021: [Multiplayer Go Game](projects#multiplayer-go-game-2021), [CAPTCHA Breaker](projects#captcha-breaker-2021), [NAS scheduler](projects#nas-scheduler-2021)
 - 2020: [Quiz against JS](projects#quiz-against-js-2020), [Weather App](projects#weather-app-2020), [Digits Classifier](projects#digits-classifier-2020), [Auto Estate Agent](projects#auto-estate-agent-2020)
 - 2019: [Traveling Salesman](projects#traveling-salesman-2019), [Tic-Tac-Toe AI](projects#tic-tac-toe-ai-2019), [Sudoku Solver](projects#sudoku-solver-2019), [Tower of Hanoi](projects#tower-of-hanoi-2019), [Convex Hull Algorithm](projects#convex-hull-algorithm-2019)
 
-# Multiplayer Go Game (2023)
+# Twitter Clone (2023)
 
-**Technologies**: AWS CDK, React, Amplify UI
+**Technologies**: Next.js, Typescript, Terraform, AWS, OIDC
 
-**Description**: The game of Go is a two-player abstract strategy board game in which players aim to surround more territory than their opponent. Players can host games of different board size and duration and play against each other to increase their rating!
+**Description**: This is a Twitter clone implemented completely in Typescript, using Next.js in the frontend and Express in the backend. A user can update his or her own profile information, and post, edit and delete tweets, including images! To login, I implemented SSO with OpenID Connect. The app data including profile information, tweets and images are stored in DynamoDB and S3.
 
-[<img src="images/go.png">](https://github.com/shangsuru/go-game-cdk)
-
+[<img src="images/twitter-clone.png">](https://github.com/shangsuru/twitter-clone)
 
 # Verifiable Lock Manager (2022)
 
@@ -50,6 +49,14 @@ type: "page"
 **Description**: This small Go program is a command line utility to demonstrate ARP spoofing. ARP is a protocol that is used to map IP addresses to MAC addresses. In an ARP spoofing attack, the attacker sends fake ARP messages with the aim of associating their own MAC address with the IP address of another device on the network. An attacker can use it to perform a man-in-the-middle attack, intercepting network traffic between two devices and viewing or modifying the data being transmitted.
 
 [<img src="images/arpspoof.png">](https://github.com/shangsuru/arpspoof)
+
+# Multiplayer Go Game (2021)
+
+**Technologies**: Spring Boot, React, MySQL
+
+**Description**: The game of Go is a two-player abstract strategy board game in which players aim to surround more territory than their opponent. Players can host games of different board size and duration and play against each other to increase their rating!
+
+[<img src="images/go.png">](https://github.com/shangsuru/go-game)
 
 # CAPTCHA Breaker (2021)
 
@@ -138,4 +145,3 @@ type: "page"
 **Description**: This is an implementation and visualization of the Convex Hull Algorithm. The convex hull of a set of points is defined as the smallest convex polygon that contains all the points in the set. It has applications in collision detection and computer graphics.
 
 [<img src="images/convexhull.png">](https://github.com/shangsuru/convex-hull)
-
