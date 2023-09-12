@@ -8,8 +8,10 @@
   </nav>
 </div>
 
-{{ if not .Site.IsServer }} {{ template "_internal/google_analytics.html" . }}
-{{ end }} {{- with .Site.Params.Social -}}
+{{ if not .Site.IsServer }} 
+{{ partial "analytics-gtag.html" . }} 
+{{ end }} 
+{{- with .Site.Params.Social -}}
 <script>
   feather.replace();
 </script>

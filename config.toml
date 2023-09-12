@@ -10,8 +10,6 @@ pygmentsstyle = "solarized-dark"
 pygmentscodefences = true
 pygmentscodefencesguesssyntax = true
 
-googleAnalytics = "G-DJP3S3P8ZK"
-
 summaryLength = 20
 
 [params]
