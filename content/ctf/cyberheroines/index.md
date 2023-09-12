@@ -14,16 +14,16 @@ The challenges are on a beginner level, I will focus on the web challenges only.
 
 ## Grace Hopper
 
-![Grace Hopper](ctf/cyberheroines/images/hopper-profile.jpg)
+![Grace Hopper](ctf/cyberheroines/images/hopper-profile.png)
 
 Grace Hopper, born in 1906, was a pioneering computer scientist and U.S. Navy Rear Admiral. Her most significant achievement was the development of the first compiler, a program that translated human-readable code into machine code. This innovation revolutionized programming, making it more accessible and efficient. Hopper's work laid the foundation for modern computer languages and played a crucial role in the early days of computing. She was also among the team of scientists who found the first computer bug, literally. A moth was trapped in their computer at Harvard.
 
 ![First computer bug](ctf/cyberheroines/images/bug.jpg)
 
-In the CTF challenge, we can input commands into an input field and somehow have to retract the flag. But soon to be noticed, a lot of linux commands are blogged by the system, including `ls`, `cat`, `head` and many more. Still, this challenges showcases that it is relatively easy to circumvent blacklisting of "security critical"commands.
+In the CTF challenge, we can input commands into an input field and somehow have to retract the flag. But soon to be noticed, a lot of linux commands are blogged by the system, including **ls**, **cat**, **head** and many more. Still, this challenges showcases that it is relatively easy to circumvent blacklisting of "security critical"commands.
 A quick google search helped me to find that I can list the files and read them using
 
-```
+```bash
 echo *
 
 while read line;
@@ -43,7 +43,7 @@ Susan Landau is a distinguished figure in the field of cybersecurity and digital
 
 ![Hints on the webpage](ctf/cyberheroines/images/landau-1.png)
 
-While navigating through the webpage associated with this challenge, we get some hints: Something about deciphering a secret code and using the 'cyberheroine' username.
+While navigating through the webpage associated with this challenge, we get some hints: Something about deciphering a secret code and using the "cyberheroine" username.
 
 After analyzing the whole application by looking at the source code and utilizing Chrome Developer Tools, we find a CSRF token. With Crackstation, we obtain it's value "Hack this" and learn that it is a MD5 hash.
 
@@ -55,19 +55,18 @@ If we now go into Burp Repeater and make another request, but substituting that 
 
 ## Radia Perlman
 
-![Radia Perlman](ctf/cyberheroines/images/perlman-profile.jpeg)
+![Radia Perlman](ctf/cyberheroines/images/perlman-profile.jpg)
 
 Radia Perlman, or the "mother of the internet", is a renowned computer scientist celebrated for her groundbreaking work in the field of network protocols. Her most significant achievement is undoubtedly the creation of the Spanning Tree Protocol (STP), a fundamental protocol that ensures the stability and redundancy of computer networks.
 
-In this challenge, we get presented a webpage called "My DNS App" and we get told that we can query the DNS information of any domain via the dns query parameter like so:
-`/dns?ip=cyberheroines.ctfd.io`
+In this challenge, we get presented a webpage called "My DNS App" and we get told that we can query the DNS information of any domain via the dns query parameter like so: **/dns?ip=cyberheroines.ctfd.io**.
 
 ![Radia Perlman](ctf/cyberheroines/images/perlman.png)
 
-The output looks a lot like it just runs an OS command in the background, so it is natural to try to inject additional OS commands to read out the flag, e.g. `/dns?ip=cyberheroines.ctfd.io;ls`. This shows us in the output that there is indeed a flag.txt.
+The output looks a lot like it just runs an OS command in the background, so it is natural to try to inject additional OS commands to read out the flag, e.g. **/dns?ip=cyberheroines.ctfd.io;ls**. This shows us in the output that there is indeed a flag.txt.
 
-The `cat` command is blocked. However we can circumvent it using the trick `grep "" flag.txt`.
-`dns?ip=cyberheroines.ctfd.io;grep%20%22%22%20flag.txt` gives us the flag.
+The **cat** command is blocked. However we can circumvent it using the trick **grep "" flag.txt**.
+**dns?ip=cyberheroines.ctfd.io;grep%20%22%22%20flag.txt** gives us the flag.
 
 ## Shafrira Goldwasser
 
@@ -85,11 +84,11 @@ For this challenge, we get a webpage where we can query biography's of a given l
 
 But in contrast to the previous challenge, we also get to see the source code.
 
-At first, it looks like a naive SQL injection, but actually it is another Command Injection, where we just have to escape the query string using `'" &&` and after that we can run arbitrary linux commands again.
+At first, it looks like a naive SQL injection, but actually it is another Command Injection, where we just have to escape the query string using **'" &&** and after that we can run arbitrary linux commands again.
 
 ![In Burp](ctf/cyberheroines/images/goldwasser-3.png)
 
-Sending the request for the biography to Burp Repeater, we can substitute the `heroine_name` parameter with the following payload and get the flag:
+Sending the request for the biography to Burp Repeater, we can substitute the **heroine_name** parameter with the following payload and get the flag:
 
 ```
 ada'" && cat /flag.txt #
@@ -105,7 +104,7 @@ Frances Allen was a trailblazing computer scientist known for her remarkable ach
 
 On the webpage of the challenge, we can make a post to nominate our personal cyber heroine.
 
-Trying to enter something like ` {{2 + 2}}`` and getting  `4` back confirms that we have a template injection vulnerability here. Given that all the previous challenge was written in Python Flask, we can assume that it is probably the Jinja templating language that is used.
+Trying to enter something like **{{2 + 2}}** and getting **4** back confirms that we have a template injection vulnerability here. Given that all the previous challenge was written in Python Flask, we can assume that it is probably the Jinja templating language that is used.
 
 We can find a suitable payload to read out the flag from [PayloadAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Server%20Side%20Template%20Injection/README.md#jinja2---basic-injection):
 
