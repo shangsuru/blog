@@ -1,5 +1,5 @@
 ---
-title: "Introduction to CodeQL"
+title: "Next Generation Static Analysis: CodeQL"
 description: "The stages of a secure software development lifecycle and how CodeQL can be integrated to build more secure software"
 tags: [devsecops, sast]
 date: 2023-07-21
