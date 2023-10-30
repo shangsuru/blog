@@ -1,12 +1,12 @@
 ---
-title: "Next Gen SAST I: Introduction to CodeQL"
+title: "Introduction to CodeQL"
 description: "The stages of a secure software development lifecycle and how CodeQL can be integrated to build more secure software"
 tags: [devsecops, sast]
 date: 2023-07-21
 math: false
 ---
 
-This article gives an introduction to CodeQL and how to use it to improve code security via query-based code inspection. The tool can be used to find vulnerabilities and enables custom security check queries to help find problems so code can be more readily improved. The queries run relatively fast and are formatted in a similar way to database SQL queries, so its relatively easy to use. I will end with a small demonstration of CodeQL in action.
+This article gives an introduction to CodeQL and how to use it to improve code security via query-based code inspection. The tool can be used to find vulnerabilities and enables custom security check queries to help find problems so code can be more readily improved. The queries run relatively fast and are formatted in a similar way to database SQL queries, making it easy to use. I will end with a small demonstration of CodeQL in action.
 
 # Secure Software Development Lifecycle
 
@@ -22,18 +22,18 @@ We can divide this process into 5 different stages: Develop, Inherit, Build, Dep
 
 Threat modelling involves identifying and analyzing potential security risks early on, allowing developers to proactively address these issues during the development stage. Development standards, such as coding guidelines and best practices, help maintain consistency and security throughout the codebase. Static Application Security Testing (SAST) tools, like CodeQL, on the other hand, scan the source code for known security flaws and coding errors, enabling early detection and remediation of vulnerabilities.
 
-In the Inherit stage, the focus shifts to managing software dependencies effectively. Software Composition Analysis (SCA) tools are a key component of this phase. They are usex to identify and assess the third-party libraries that a project relies on. By thoroughly analyzing these dependencies, development teams can ensure that they meet security and compliance standards. Clear policies for dependency management and the creation of an inventory of all utilized components and proper patch management are paramount to prevent vulnerabilities arising from outdated or insecure dependencies.
+In the Inherit stage, the focus shifts to managing software dependencies effectively. Software Composition Analysis (SCA) tools are a key component of this phase. They are used to identify and assess the third-party libraries that a project relies on. By thoroughly analyzing these dependencies, development teams can ensure that they meet security and compliance standards. Clear policies for dependency management and the creation of an inventory of all utilized component are paramount to prevent vulnerabilities arising from outdated or insecure dependencies.
 
 The Build stage is where we test the final product as a whole. Dynamic Application Security Testing (DAST) tests the software during runtime, simulating real-world attacks. Compliance Testing ensures that the software complies with industry standards, legal regulations, etc. while infrastructure testing assesses the security of the underlying infrastructure where the application will be deployed. This includes examining servers, databases, and network configurations for vulnerabilities and misconfigurations that could be exploited.
 
-The Deploy stage should be as automated as possible to avoid human error.
+The Deploy stage should be as automated as possible to avoid human error, e.g. through Infrastructure as Code tools like Terraform.
 
 The Operate stage is where the software runs in production. To ensure the security of the application we can make use of Cloud Security Monitoring, Runtime Application Self-Protection, and Bug Bounties.
 Cloud Security Monitoring involves continuous surveillance and analysis of the cloud infrastructure. This is essential for identifying and responding to potential security incidents, abnormal behaviour or vulnerabilities in a cloud-based environment. RASP is an additional security layer embedded within the application itself. It dynamically monitors the application's behavior during runtime, identifying and mitigating potential security threats and attacks in real-time. Bug Bounties on the other hand, are programs that invite external security researches (bug hunters) to identify and report vulnerabilities in the software. By incentivizing ethical hacking, organizations can discover and address security issues that might otherwise go unnoticed.
 
 # What is CodeQL and what can we do with it?
 
-CodeQL is a declarative static analysis tool. It creates a database of facts from a program source, then runs queries over those facts to extract information.
+CodeQL is a declarative static analysis tool. It creates a database of facts from a program source, then runs queries over those facts to extract information (see Figure 2).
 
 ![CodeQL Components](posts/codeql/images/components.png)
 
@@ -45,7 +45,7 @@ Queries can be used to find bugs and security vulnerabilities in large codebases
 
 # How does a query look like?
 
-In Figure 3, you can see a simple query and its results, detecting empty Else-Blocks.The query is easy to understand and looks similar to a standard SQL query. The code is language specific, but largely similar across languages.
+In Figure 3, you can see a simple query and its results, detecting empty Else-Blocks. The query is easy to understand and looks similar to a standard SQL query. The code is language specific, but largely similar across languages.
 
 ![Example Query](posts/codeql/images/simple-query.png)
 
@@ -53,7 +53,7 @@ In Figure 3, you can see a simple query and its results, detecting empty Else-Bl
 Fig.3 - Example Query
 </p>
 
-To model more complex queries, CodeQL provides further language constructs, namely predicates and classes. In Figure 4, we rewrite the same original query using predicates and classes, respectively.
+To model more complex queries, CodeQL provides other language constructs, namely predicates and classes. In Figure 4, we rewrite the same original query using predicates and classes, respectively.
 
 ![Predicates and Classes](posts/codeql/images/predicates-classes.png)
 
@@ -64,7 +64,7 @@ Fig.4 - Predicates and Classes
 # Advanced Functionality
 
 CodeQL also offers advanced analysis modes. Variant Analysis takes a known vulnerability and models its characteristics into a CodeQL query, which can then be run across several repositories to find vulnerabilities.
-Taint Tracking Analysis emulates a program run and tracks data from an origin, called the source, usually user provided input, to a destination, called sink representing a vulnerable or dangerous function. If there is a flow from source to sink, it means a vulnerability might exist in the code. To run a Taint Tracking Analysis, we need to define sources, sinks, taint steps and sanitizers. Next we will see a small example that uses Taint Tracking to detect a SQL injection vulnerability.
+Taint Tracking Analysis emulates a program run and tracks data from an origin, called the source, usually user provided input, to a destination, called sink representing a vulnerable or dangerous function. If there is a flow from source to sink, it means a vulnerability might exist in the code. To run a Taint Tracking Analysis, we need to define sources, sinks, and optionally taint steps and sanitizers. Next we will see a small example that uses taint tracking to detect a SQL injection vulnerability.
 
 # Hands-On
 
@@ -76,7 +76,7 @@ The goal of this demonstration is to write a query to detect a simple SQL inject
 Fig.5 - SQL Injection
 </p>
 
-SQL Injection is a simple to understand vulnerability. An attacker can inject code to modify the execution of SQL queries to access sensitive data (see Figure 5). Tools like [sqlmap](https://sqlmap.org/) can automate the exploitation of those vulnerabilities to some extent. The vulnerability can be prevented by using Prepared Statements.
+SQL Injection is a simple to understand vulnerability. An attacker can inject code to modify the execution of SQL queries to access sensitive data (see Figure 5). Tools like [sqlmap](https://sqlmap.org/) can automate the exploitation of those vulnerabilities to some extent. The vulnerability can be prevented by using [Prepared Statements](https://portswigger.net/web-security/sql-injection#how-to-prevent-sql-injection).
 
 ![Vulnerable Login](posts/codeql/images/exploitation.png)
 
@@ -84,9 +84,9 @@ SQL Injection is a simple to understand vulnerability. An attacker can inject co
 Fig.6 - Vulnerable Login
 </p>
 
-In Figure 6, you can see the exploitation of this simple SQL injection vulnerability in the Login functionality of the OWASP juice shop. Inside the email form input, we close the input string and append "--" to start a comment in SQLite syntax, causing the query to not check the password when querying for the user to log in.
+In Figure 6, you can see the exploitation of a SQL injection vulnerability in the login functionality of the OWASP juice shop. Inside the email form input, we close the input string and append "--" to start a comment in SQLite syntax, causing the query to not check the password when querying for the user to log in.
 
-To get started writing the query, we need to setup CodeQL. The easiest way to do this, is to install the CodeQL extension for VS Code and clone the Github repository containing the [starter workspace](https://github.com/github/vscode-codeql-starter) that contains CodeQL libraries and queries for all supported languages. This is where we can write queries for testing purposes. Using the extension, we add a CodeQL database. In our case we just have to provide it with the Github repository link of OWASP Juice Shop and we are good to go!
+To get started writing the query, we need to setup CodeQL. The easiest way to do this, is to install the CodeQL extension for VS Code and clone the Github repository containing the [starter workspace](https://github.com/github/vscode-codeql-starter) that contains CodeQL libraries and queries for all supported languages. This is where we can write queries for testing purposes. Using the extension, we add a CodeQL database. In our case, we just have to provide it with the Github repository link of OWASP Juice Shop and we are good to go!
 
 Analyzing the code, we first identify the source and sink of the vulnerability (see Figure 7):
 
@@ -96,11 +96,9 @@ Analyzing the code, we first identify the source and sink of the vulnerability (
 Fig.7 - Source and Sink
 </p>
 
-The source, or user-controlled input, is the Request object, containing email and password provided upon login in. The sink, or vulnerable function, is the models.sequelize.query function.
+The source, or user-controlled input, is the request object, containing email and password provided upon login in. The sink, or vulnerable function, is the models.sequelize.query function.
 
-We will now write our own query to detect this and similar vulnerabilities in the code. We will make use of Taint Tracking to detect if there is a flow from source to sink.
-
-Therefore, in our query, we have to fill in some boilerplate code, to specify, in the form of predicates, what our sources and sinks are (see Figure 8).
+We will now write our own query to detect this and similar vulnerabilities in the code. We will make use of taint tracking to detect if there is a flow from source to sink. To do this, we have to fill in some boilerplate code, to specify what our sources and sinks are in the form of predicates (see Figure 8).
 
 ![Our own query](posts/codeql/images/own-query.png)
 
@@ -108,9 +106,7 @@ Therefore, in our query, we have to fill in some boilerplate code, to specify, i
 Fig.8 - Our own query
 </p>
 
-Of course, we would not need to write such a query by ourselves, since CodeQL already provides queries for all kinds of vulnerabilities, for example, [this](https://github.com/github/codeql/blob/8e890571ed7b21bc10698c5dbd032b9ed551d8f1/javascript/ql/src/Security/CWE-089/SqlInjection.ql).
-
-Anyway, when we run our query, we get the following results:
+Of course, we would not need to write such a query by ourselves, since CodeQL already provides queries for all kinds of vulnerabilities, for example, [this](https://github.com/github/codeql/blob/8e890571ed7b21bc10698c5dbd032b9ed551d8f1/javascript/ql/src/Security/CWE-089/SqlInjection.ql) is the actual, much more complex, query used to detect SQL injections. Anyway, when we run our query, we get the following results:
 
 ![Query Results](posts/codeql/images/results.png)
 
@@ -118,7 +114,7 @@ Anyway, when we run our query, we get the following results:
 Fig.9 - Query Results
 </p>
 
-It finds our login vulnerabity and two other SQL injection vulnerabilities of similar kind in the codebase! This concludes this short introduction to CodeQL
+It finds our login vulnerabity and two other SQL injection vulnerabilities of similar kind in the codebase! This concludes this short introduction to CodeQL.
 
 # Similar tools
 
