@@ -13,7 +13,7 @@ pygmentscodefencesguesssyntax = true
 summaryLength = 20
 
 [params]
-	subtitle = "A blog about distributed systems and security"
+	subtitle = "A blog about various security related topics"
 	disableDisqusTypes = ["page"]
 	featherIconsCDN = true
 	mode = "light" # "dark", "auto", "light"
