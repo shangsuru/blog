@@ -1,6 +1,6 @@
 ---
 title: "Authorization as a service"
-description: "How and why to build a authorization microservice and make use of the policy as code paradigm"
+description: "How and why to build an authorization microservice and make use of the policy as code paradigm"
 tags: [access-control]
 date: 2023-12-26
 math: false
@@ -22,13 +22,13 @@ Because all data related to access control is centralized we achieve better audi
 
 # Challenges
 
-A challenge of building an authorization service then is that authorization is on the hot path of a lot of requests coming from potentially a dozen high traffic applications. The service needs to be scalable with low latency. Also high availability is paramount. Would the service went down completely, relying applications would have no other choice than to reply "Access Denied" to all of their requests, effectively causing a denial of service.
+A challenge of building an authorization service then is that authorization is on the hot path of a lot of requests coming from potentially a dozen high traffic applications. The service needs to be scalable with low latency. Also high availability is paramount. If the service went down completely, relying applications would have no other choice than to reply "Access Denied" to all of their requests, effectively causing a denial of service.
 
 Additionally, the system needs to be flexible enough to express a wide range of access control policies that the applications need. And most important of all, the access decisions need to be correct, which is easier said then done if we talk about a distributed system that potentially could span over servers across multiple data centers and we therefore have to fight consistency issues when updates to access control policies and their underlying data are made concurrently.
 
 # The CAP Theorem
 
-From the CAP theorem we learnt that under network partitions, we have to make a choice between consistency and availability. But even without network partitions, we still need to balance a tradeoff between consistency and latency. Eventual consistent databases like Amazon's DynamoDB, already worthy for a post of its own (see the Paper [Dynamo: Amazon's Highly Available Key Value Store](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf)). It prioritizes high availability and performance over strong consistency, allowing for a temporary inconsistent view of the data and reconcile later. It is clear that for a database that stores our permissions, strong consistency is necessary.
+From the CAP theorem we have learnt that under network partitions, we have to make a choice between consistency and availability. But even without network partitions, we still need to balance a tradeoff between consistency and latency. Eventual consistent databases like Amazon's DynamoDB are already worthy for a post of their own (see the Paper [Dynamo: Amazon's Highly Available Key Value Store](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf)). They prioritizes high availability and performance over strong consistency, allowing for a temporary inconsistent view of the data and reconcile later. But it is clear that for a database that stores our permissions, strong consistency is necessary.
 
 # Zanzibar
 
@@ -37,16 +37,24 @@ Through the investigation of my initial question of how to build an authorizatio
 
 # Spanner
 
-This problem is mostly solved by building on top of Spanner (see the paper ["Spanner: Google's Globally Distributed Database"](https://static.googleusercontent.com/media/research.google.com/en//archive/spanner-osdi2012.pdf)) that provides globally distributed ACID transactions (i.e. in the scenario where data is sharded across different servers), linearizability of reads and writes (i.e. reads and writes, although concurrently, appear to be executed on a single machine) and consistent time stamps.
+The problem is mostly solved by building on top of Spanner (see the paper ["Spanner: Google's Globally Distributed Database"](https://static.googleusercontent.com/media/research.google.com/en//archive/spanner-osdi2012.pdf)) that provides globally distributed ACID transactions (i.e. in the scenario where data is sharded across different servers), linearizability of reads and writes (i.e. reads and writes, although concurrently, appear to be executed on a single machine) and consistent time stamps.
 
 Spanner uses a collection of popular techniques to achieve this: State machine replication using Paxos, Two-Phase Commit for cross-shard atomicity, and Two-Phase Locking for Linearizability.
 
+## Paxos
+
 Paxos is a consensus algorithm used in distributed systems to achieve consensus among a group of nodes or processes, i.e. make them agree on a single value or sequence of values despite the possibility of failures and network delays.
-State machine replication (SMR) is a technique used in distributed systems to ensure fault tolerance by replicating the state of a system across multiple nodes. Paxos ensures that replicas in the system agree on the order and content of operations to be executed, even in the presence of faults, ensuring consistency across all replicas. There are many papers written about Paxos by its creator, Leslie Lamport, e.g. ["The Part-Time Parliament](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) and ["https://lamport.azurewebsites.net/pubs/paxos-simple.pdf"](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf). But honestly, it can still be quite hard to understand. That's why another consensus algorithm, Raft, was developed. It's ideas are described in ["In search for an understandable consensus algorithm"](https://raft.github.io/raft.pdf). There is also a really nice visualization that eases understanding [here](https://thesecretlivesofdata.com/raft/).
+State machine replication (SMR) is a technique used in distributed systems to ensure fault tolerance by replicating the state of a system across multiple nodes. Paxos ensures that replicas in the system agree on the order and content of operations to be executed, even in the presence of faults, ensuring consistency across all replicas. There are many papers written about Paxos by its creator, Leslie Lamport, e.g. ["The Part-Time Parliament](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) and ["Paxos Made Simple"](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf). But honestly, it can still be quite hard to understand. That's why another consensus algorithm, Raft, was developed. Its ideas are described in ["In search for an understandable consensus algorithm"](https://raft.github.io/raft.pdf). There is also a really nice visualization that eases understanding [here](https://thesecretlivesofdata.com/raft/).
+
+## Two-Phase Commit
 
 The Two-Phase Commit (2PC) protocol is a distributed algorithm used to ensure atomicity in transactions. It guarantees that either all participating nodes commit to a transaction or they all abort it, thereby maintaining consistency and preventing partial updates or inconsistencies across shards. It distinguishes two phases: In the prepare phase, each participant prepares the transaction and responds with an acknoledgement to the coordinator. Then we enter the second phase, the commit or abort phase. If all participants respond positively in the prepare phase, the coordinator sends a commit message to all participants. Upon receiving the commit message, participants apply the changes permanently. If any participant failed to prepare or the coordinator decides to abort for any reason, it sends an abort message to all participants, and they roll back the transaction, reverting to the pre-transaction state.
 
-Two-phase locking (2PL) is a concurrency control mechanism used in databases to ensure serializability and prevent conflicts among concurrent transactions. It operates in two phases: the growing phase and the shrinking phase. In the growing phase, a transaction can acquire locks on data items it accesses but cannot release any locks until it reaches a point where it needs no more locks. In the shrinking phase, a transaction releases all the locks it holds. Once a lock is released, it cannot acquire any new locks. Two types of locks exist: Write locks, which are exclusive, and read locks, which are shared.
+## Two-Phase Locking
+
+Two-Phase Locking (2PL) is a concurrency control mechanism used in databases to ensure serializability and prevent conflicts among concurrent transactions. It operates in two phases: the growing phase and the shrinking phase. In the growing phase, a transaction can acquire locks on data items it accesses but cannot release any locks until it reaches a point where it needs no more locks. In the shrinking phase, a transaction releases all the locks it holds. Once a lock is released, it cannot acquire any new locks. Two types of locks exist: Write locks, which are exclusive, and read locks, which are shared.
+
+## Consistent Snapshots
 
 The interesting thing about Spanner is that it does not require read locks, which is a huge advantage. It does it by using consistent snapshots via Multi-Version Concurrency Control. That means the database stores different snapshots of the data for each update, associated with a timestamp that is consistent with causality. Read transaction can read from such a prior consistent snapshot without read locks. Obtaining globally valid commit timestamps though is definitely a challenge, because each physical clock has a certain drift and uncertainty. Spanner returns two timestamps representing an uncertainty window, guaranteing that the actual timestamp will be somewhere in that window. Transaction will wait the delta between those two timestamps before the commit, ensuring that there is no overlap of the uncertainty windows between two concurrent transactions. Google reduces the uncertainty window by deploying atomic clocks and GPS receivers in each datacenter.
 
@@ -64,7 +72,7 @@ There is an issue to watch out for though, and it is coined "The New Enemy Probl
 
 # Zookies and other performance optimizations
 
-An important insight to optimize performance is that the access control checks don't have to be necessarily be evaluated on the latest snapshot. Reading from older snapshots still guarantees consistency.
+An important insight to optimize performance is that the access control checks don't have to be necessarily evaluated on the latest snapshot. Reading from older snapshots still guarantees consistency.
 
 To avoid using stale ACLs one could try to always evaluate at the latest snapshot. That would require global data synchronization with high latency.
 Instead, we can serve most checks at a default staleness with already replicated data. How?
@@ -72,21 +80,19 @@ Zookie is a concept within Zanzibar that opaquely encodes a timestamp with toget
 
 Other performance optimizations utilized in Zanzibar are request hedging to reduce tail latency (sending requests to multiple servers and use the first response that comes back), performance isolation to protect against misbehaving clients (limit on CPU usage, outstanding RPCs, etc.),
 optimized processing of large and deeply nested sets through an indexing service, and hot spot mitigation through distributed caching.
-Distributed Caching means we distribute subproblems to nodes likely to have the answer. Subproblems are things like is a user member of a certain group and so on. We can distribute subproblems evenly among servers using consistent hashing.
+Distributed Caching means we distribute subproblems to nodes likely to have the answer. Subproblems are things like is a user member of a certain group and so on. We can distribute subproblems evenly among servers using consistent hashing:
 
 [Consistent hashing](https://www.youtube.com/watch?v=UF9Iqmg94tk) is a technique designed to address the problem of distributing data across multiple nodes in a scalable and efficient manner while minimizing disruptions caused by node additions or removals. Both data keys and servers are hashed onto a common hash space, usually represented as a ring. The data is assigned to the closest node looking clockwise.
 The advantage of this method is that when a node is added or removed, only a portion of the keys needs to be remapped, reducing the amount of data movement required. The keys that were previously mapped to the failed or removed node are reassigned again to the closest available node on the ring looking clockwise.
 
 # SpiceDB
 
-There are different open source, Zanzibar-inspired databases for creating and managing security-critical application permissions. One of them is [SpiceDB](https://github.com/authzed/spicedb). Developers create a schema and use client libraries to apply the schema to the database, insert relationships and query the database to check permissions. It offers a pluggable storage system that has support for MySQL, CockroachDB, Spanner, etc. There are [sample applications](https://github.com/manaty226/sample-app-with-spicedb) and also a [Youtube video](https://www.youtube.com/watch?v=lXizkPvSbHU) introducing the project.
+There are different open source, Zanzibar-inspired databases for creating and managing security-critical application permissions. One of them is [SpiceDB](https://github.com/authzed/spicedb). Developers create a schema and use client libraries to apply the schema to the database, insert relationships and query the database to check permissions. It offers a pluggable storage system that has support for MySQL, CockroachDB, Spanner, etc. CockroachDB could be somewhat called the open source variant of Spanner. There are [sample applications](https://github.com/manaty226/sample-app-with-spicedb) and also a [Youtube video](https://www.youtube.com/watch?v=lXizkPvSbHU) introducing the project.
 
 # OPA and OPAL
 
 There exists another paradigm of building scalable unified authorization systems, that came up a lot during my research. [Open Policy Agent](https://www.openpolicyagent.org/) and its administration layer [OPAL](https://docs.opal.ac/). OPA is a policy engine that runs as a sidecar to the application and acts a decision point for access control. OPAL is a system on top of OPA that keeps each OPA instance up to date with respect to data and policy updates.
-Policies are separete from the data and stored in a Git repository expressed in Rego, a Policy-as-code-Language specifically designed to express permissions. OPAL monitors the repository and can push updates to the OPA client.
-
-We can push new policies to the Git repository without changing application code and we can spin up an entirely new application that can also make use of the already existing policies, making it highly scalable.
+Policies are separete from the data and stored in a Git repository expressed in Rego, a Policy-as-code-Language specifically designed to express permissions. OPAL monitors the repository and can push updates to the OPA client. We can push new policies to the Git repository without changing application code and we can spin up an entirely new application that can also make use of the already existing policies, making it highly scalable.
 
 # Policy as Code
 
