@@ -116,5 +116,5 @@ Policy-as-code systems can express various complex authorization policies, ABAC,
 To learn more about databases and distributed systems in general, there are several high quality lecture series on Youtube:
 
 - Andy Pavlo's [Introduction to Databases](https://www.youtube.com/watch?v=uikbtpVZS2s&list=PLSE8ODhjZXjaKScG3l0nuOiDTTqpfnWFf) (and Advanced Database Systems!) from CMU
-- [Distributed Systems Lectures](https://www.youtube.com/watch?v=cQP8WApzIQQ&list=PLrw6a1wE39_tb2fErI4-WkMbsvGQk9_UB) by Robert Morris from MIT, and yes that is [the guy that implemented the first computer worm](https://en.wikipedia.org/wiki/Robert_Tappan_Morris) and went to prison because of that
+- [Distributed Systems Lectures](https://www.youtube.com/watch?v=cQP8WApzIQQ&list=PLrw6a1wE39_tb2fErI4-WkMbsvGQk9_UB) by Robert Morris from MIT, and yes that is [the guy that implemented the first computer worm](https://en.wikipedia.org/wiki/Robert_Tappan_Morris) and got 400 hours of community service (luckily did not go to jail)
 - [Distributed Systems Lectures](https://www.youtube.com/watch?v=UEAMfLPZZhE&list=PLeKd45zvjcDFUEv_ohr_HdUFe97RItdiB) by Martin Kleppmann, the author of the book "Designing Data-Intensive Applications"
