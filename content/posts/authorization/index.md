@@ -39,7 +39,7 @@ Through the investigation of my initial question of how to build an authorizatio
 
 The problem is mostly solved by building on top of Spanner (see the paper ["Spanner: Google's Globally Distributed Database"](https://static.googleusercontent.com/media/research.google.com/en//archive/spanner-osdi2012.pdf)) that provides globally distributed ACID transactions (i.e. in the scenario where data is sharded across different servers), linearizability of reads and writes (i.e. reads and writes, although concurrently, appear to be executed on a single machine) and consistent time stamps.
 
-Spanner uses a collection of popular techniques to achieve this: State machine replication using Paxos, Two-Phase Commit for cross-shard atomicity, and Two-Phase Locking for Linearizability.
+Spanner uses a collection of popular techniques to achieve this: State machine replication using Paxos, Two-Phase Commit for cross-shard atomicity, and Two-Phase Locking for Serializability.
 
 ## Paxos
 
