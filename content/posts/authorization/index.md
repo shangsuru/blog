@@ -91,25 +91,20 @@ There are different open source, Zanzibar-inspired databases for creating and ma
 
 # OPA and OPAL
 
-There exists another paradigm of building scalable unified authorization systems, that came up a lot during my research. [Open Policy Agent](https://www.openpolicyagent.org/) and its administration layer [OPAL](https://docs.opal.ac/). OPA is a policy engine that runs as a sidecar to the application and acts a decision point for access control. OPAL is a system on top of OPA that keeps each OPA instance up to date with respect to data and policy updates.
+There exists another paradigm of building scalable unified authorization systems, that came up a lot during my research. [Open Policy Agent](https://www.openpolicyagent.org/) and its administration layer [OPAL](https://docs.opal.ac/). OPA is a policy engine that runs as a central server or as a sidecar to the application for lower latency and acts a decision point for access control. OPAL is a system on top of OPA that keeps each OPA instance up to date with respect to data and policy updates.
 Policies are separete from the data and stored in a Git repository expressed in Rego, a Policy-as-code-Language specifically designed to express permissions. OPAL monitors the repository and can push updates to the OPA client. We can push new policies to the Git repository without changing application code and we can spin up an entirely new application that can also make use of the already existing policies, making it highly scalable.
 
-# Policy as Code
+Policy as Code is an interesting paradigm, that offers similar benefits to Infrastructure as Code. We can use a dedicated languages to express policies in a very readable, flexible and reusable way. It decouples policy from code, so we can make changes in those policies without needing to change the code. Also we achieve minimal code repetition across services. We can version policies using Git, and can audit policy changes. The whole process enhances
+security, because it reduces errors and bugs by having well documented and easily readable policies using a uniform language designed for that purpose. Another huge advantage of policy as code is that we can build other useful tooling on top of the centralized policies, e.g., to optimize policies and prove that those policies actually represent the intended security model.
 
-Policy as Code is an interesting paradigm, that offers similar benefits to Infrastructure as Code.
-We can use a dedicated languages to express policies in a very readable, flexible and reusable way.
-It decouples policy from code, so we can make changes in those policies without needing to change the code. Also we achieve
-minimal code repetition across services. We can version policies using Git, and can audit policy changes. The whole process enhances
-security, because it reduces errors and bugs by having well documented and easily readable policies using a uniform language designed for that purpose.
-
-Rego is an example of such a language right now primarily used for infrastructure configuration in the context of Kubernetes. [Cedar](https://www.cedarpolicy.com/en) by AWS is another such language with a focus on application-level authorization. It is readable and performant, enhances security and can potentially help with compliance to industry regulations. Another huge advantage of policy as code is that we can build other useful tooling on top of the centralized policies, e.g., to optimize policies and prove that those policies actually represent the intended security model. This is what AWS aims to do with Cedar, and there are also [demos](https://github.com/cedar-policy/cedar-examples) available.
+I think that building authorization and API access control can help to mitigate current API security issues that can be present in complex multi-tenant SaaS applications. For more information, check out this [guide by AWS](https://docs.aws.amazon.com/prescriptive-guidance/latest/saas-multitenant-api-access-authorization/welcome.html) on the topic.
 
 # Conclusion
 
 We have seen two approaches of unifying authorization into a dedicated service, offering both performance gains in a highly distributed and interdependent environment, and better security through better auditability and readability of access control policies.
 Zanzibar was implemented by Google and is therefore designed to solve Google scale problems, which only a few companies have to face. Zanzibar-like systems are great for high-volume systems and to model complex relationships and permission hierarchies with frequent, dynamic permission changes, but struggle with (a few) policies that can't be expressed as relationships, e.g. those considering environmental attributes.
 
-Policy-as-code systems can express various complex authorization policies, ABAC, RBAC, and so on. They offer the advantage of extracting policies from code to allow for better readibility, auditability and reuse of policies, arguably improving security. But they are only suited for environments with low and medium level of data changes and have problems to efficiently resolve hierarchical permissions where systems require reverse lookup, e.g., answering the question “who has access to this resource?” instead of just “can the user access this resource?”. It will be interesting to see if the policy as code approach will be widely adopted in the future also for some relatively simple, stand alone applications though.
+Policy-as-code systems can express various complex authorization policies, ABAC, RBAC, and so on. They offer the advantage of extracting policies from code to allow for better readibility, auditability and reuse of policies, arguably improving security. But they are only suited for environments with low and medium level of data changes and have problems to efficiently resolve hierarchical permissions where systems require reverse lookup, e.g., answering the question “who has access to this resource?” instead of just “can the user access this resource?”. It will be interesting to see if the policy as code approach will be widely adopted in the future to secure complex APIs.
 
 # Further Resources
 
