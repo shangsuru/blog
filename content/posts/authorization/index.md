@@ -1,7 +1,7 @@
 ---
 title: "Scalable Authorization Architectures"
 description: "About Google Zanzibar like authorization systems, policy engines and the policy as code paradigm"
-tags: [access-control]
+tags: [access-control, distributed-systems]
 date: 2023-12-26
 math: false
 ---
