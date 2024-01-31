@@ -1,6 +1,6 @@
 ---
-title: "Authorization as a service"
-description: "How and why to build an authorization microservice and make use of the policy as code paradigm"
+title: "Scalable Authorization Architectures"
+description: "About Google Zanzibar like authorization systems, policy engines and the policy as code paradigm"
 tags: [access-control]
 date: 2023-12-26
 math: false
