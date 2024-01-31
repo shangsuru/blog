@@ -105,11 +105,3 @@ We have seen two approaches of unifying authorization into a dedicated service, 
 Zanzibar was implemented by Google and is therefore designed to solve Google scale problems, which only a few companies have to face. Zanzibar-like systems are great for high-volume systems and to model complex relationships and permission hierarchies with frequent, dynamic permission changes, but struggle with (a few) policies that can't be expressed as relationships, e.g. those considering environmental attributes.
 
 Policy-as-code systems can express various complex authorization policies, ABAC, RBAC, and so on. They offer the advantage of extracting policies from code to allow for better readibility, auditability and reuse of policies, arguably improving security. But they are only suited for environments with low and medium level of data changes and have problems to efficiently resolve hierarchical permissions where systems require reverse lookup, e.g., answering the question “who has access to this resource?” instead of just “can the user access this resource?”. It will be interesting to see if the policy as code approach will be widely adopted in the future to secure complex APIs.
-
-# Further Resources
-
-To learn more about databases and distributed systems in general, there are several high quality lecture series on Youtube:
-
-- Andy Pavlo's [Introduction to Databases](https://www.youtube.com/watch?v=uikbtpVZS2s&list=PLSE8ODhjZXjaKScG3l0nuOiDTTqpfnWFf) (and Advanced Database Systems!) from CMU
-- [Distributed Systems Lectures](https://www.youtube.com/watch?v=cQP8WApzIQQ&list=PLrw6a1wE39_tb2fErI4-WkMbsvGQk9_UB) by Robert Morris from MIT, and yes that is [the guy that implemented the first computer worm](https://en.wikipedia.org/wiki/Robert_Tappan_Morris) and got 400 hours of community service (luckily did not go to jail)
-- [Distributed Systems Lectures](https://www.youtube.com/watch?v=UEAMfLPZZhE&list=PLeKd45zvjcDFUEv_ohr_HdUFe97RItdiB) by Martin Kleppmann, the author of the book "Designing Data-Intensive Applications"
